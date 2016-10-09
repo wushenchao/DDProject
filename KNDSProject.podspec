@@ -20,5 +20,7 @@ Pod::Spec.new do |s|
   s.tvos.deployment_target = "9.0"
   s.framework = "CFNetwork"
 
-  s.dependency "YTKNetwork", "~> 2.0.1"
+  s.dependency "Mantle", "~> 2.0.0"
+  s.dependency "MagicalRecord", "~> 2.3.0"
+
 end
