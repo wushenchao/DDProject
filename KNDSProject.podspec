@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = "10.9"
   s.watchos.deployment_target = "2.0"
   s.tvos.deployment_target = "9.0"
-  s.framework = "CFNetwork"
+  s.framework = "UIKit"
 
   s.dependency "Mantle", "~> 2.0.0"
   s.dependency "MagicalRecord", "~> 2.3.0"
