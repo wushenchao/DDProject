@@ -9,6 +9,7 @@
 import UIKit
 
 private let DDTabBarHeight: CGFloat = 49
+private let DDNavHeight: CGFloat = 64
 private let DDTabBarLabelTag: Int = 100
 private let DDTabBarButtonTag: Int = 999
 
@@ -34,7 +35,7 @@ class DDTabBarController: UITabBarController {
     }
     
     private lazy var tabBarView: UIView = {
-        let tabBarView = UIView(frame: CGRect(x: -1, y: (self.view.frame.height - DDTabBarHeight), width: self.view.frame.width + 2, height: DDTabBarHeight + 1))
+        let tabBarView = UIView(frame: CGRect(x: -1, y: (self.view.frame.height - DDTabBarHeight - DDNavHeight), width: self.view.frame.width + 2, height: DDTabBarHeight + 1))
         tabBarView.layer.masksToBounds = true
         tabBarView.layer.shadowColor = UIColor.lightGray.cgColor
         tabBarView.layer.shadowRadius = 3

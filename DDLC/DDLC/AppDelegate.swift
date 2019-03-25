@@ -14,7 +14,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var tabBarController: DDTabBarController!
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.main.bounds)
@@ -22,12 +21,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let nav = UINavigationController(rootViewController: tabBarController)
         window?.rootViewController = nav
         
-        UIApplication.shared.statusBarStyle = .lightContent
         let navBar = UINavigationBar.appearance()
         navBar.isTranslucent = false
         navBar.titleTextAttributes = [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 18.0),
                                       NSAttributedString.Key.foregroundColor: UIColor.white]
-        navBar.barTintColor = UIColor.black
+        navBar.barTintColor = UIColor.lightGray
         window?.makeKeyAndVisible()
         return true
     }
