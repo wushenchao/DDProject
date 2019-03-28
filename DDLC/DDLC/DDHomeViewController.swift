@@ -13,7 +13,8 @@ class DDHomeViewController: DDBaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        print(self.countPrimes(10))
+        
+        self.algorithmTest()
     }
     
 

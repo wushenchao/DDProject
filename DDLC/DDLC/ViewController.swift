@@ -433,6 +433,8 @@ extension DDBaseViewController {
     
 }
 
+
+// MARK: - Custom
 extension DDBaseViewController {
     
     // 1. 两数之和
@@ -759,7 +761,7 @@ extension DDBaseViewController {
         return tmp_num
     }
     
-    // 229. 求众数 II
+    // 229. 求众数 II 摩尔排序
     func majorityElement2(_ nums: [Int]) -> [Int] {
         /*
          给定一个大小为 n 的数组，找出其中所有出现超过 ⌊ n/3 ⌋ 次的元素。
@@ -944,6 +946,48 @@ extension DDBaseViewController {
             }
         }
     }
+    
+    // 205. 同构字符串
+    func isIsomorphic(_ s: String, _ t: String) -> Bool {
+        /*
+         给定两个字符串 s 和 t，判断它们是否是同构的。如果 s 中的字符可以被替换得到 t ，那么这两个字符串是同构的。
+         所有出现的字符都必须用另一个字符替换，同时保留字符的顺序。两个字符不能映射到同一个字符上，但字符可以映射自己本身。
+         示例 1:
+         输入: s = "egg", t = "add"
+         输出: true
+         */
+        if s.count == 0 {
+            return true
+        }
+        var tChars: [Character] = []
+        for tv in t {
+            tChars.append(tv)
+        }
+        tChars = tChars.reversed()
+        var tmps: [Character: Character] = [:]
+        var tmpt: [Character: Character] = [:]
+        for sv in s {
+            let tv: Character = tChars.popLast()!
+            let tmpST: Bool = tmps.keys.contains(sv)
+            let tmpTS: Bool = tmpt.keys.contains(tv)
+            if (tmpST && !tmpTS) || (!tmpST && tmpTS) {
+                return false
+            }
+            else if (tmpST && tmpTS) {
+                let tmpSTV: Character = tmps[sv]!
+                let tmpTSV: Character = tmpt[tv]!
+                if tmpSTV != tv || tmpTSV != sv {
+                    return false
+                }
+            }
+            else {
+                tmps[sv] = tv
+                tmpt[tv] = sv
+            }
+        }
+        return true
+    }
+    
 }
 
 
@@ -1085,5 +1129,11 @@ extension DDBaseViewController {
      | Max       |
      +-----------+
      */
-    
+}
+
+extension DDBaseViewController {
+    // 算法
+    open func algorithmTest() {
+        
+    }
 }
