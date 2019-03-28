@@ -246,6 +246,40 @@ extension DDBaseViewController {
         let sum: Int = outs.reduce(0, +)
         return sum
     }
+    
+    // 206. 反转链表
+    func reverseList(_ head: ListNode?) -> ListNode? {
+        /*
+         反转一个单链表。
+         示例:
+         输入: 1->2->3->4->5->NULL
+         输出: 5->4->3->2->1->NULL
+         */
+        if head == nil || head?.next == nil {
+            return head
+        }
+        let node = reverseList(head?.next)
+        head?.next?.next = head
+        head?.next = nil
+        return node
+    }
+    
+    // 206. 反转链表
+    func reverseList1(_ head: ListNode?) -> ListNode? {
+        if head == nil || head?.next == nil {
+            return head
+        }
+        var tmpHead = head
+        var result: ListNode?
+        while tmpHead != nil {
+            let val = tmpHead?.val
+            let node = ListNode(val!)
+            node.next = result
+            result = node
+            tmpHead = tmpHead?.next
+        }
+        return result
+    }
 }
 
 
@@ -1134,6 +1168,15 @@ extension DDBaseViewController {
 extension DDBaseViewController {
     // 算法
     open func algorithmTest() {
-        
+        let node = ListNode(1)
+        let node2 = ListNode(2)
+        let node3 = ListNode(3)
+        let node4 = ListNode(4)
+        let node5 = ListNode(5)
+        node.next = node2
+        node2.next = node3
+        node3.next = node4
+        node4.next = node5
+        print(reverseList1(node))
     }
 }
