@@ -465,6 +465,17 @@ extension DDBaseViewController {
         return hasPathSum(root?.left, sum - root!.val) || hasPathSum(root?.right, sum-root!.val)
     }
     
+    // 226. 翻转二叉树
+    func invertTree(_ root: TreeNode?) -> TreeNode? {
+        if root == nil {
+            return nil
+        }
+        let temp = invertTree(root?.left)
+        root?.left = invertTree(root?.right)
+        root?.right = temp
+        return root
+    }
+    
 }
 
 
