@@ -1022,6 +1022,47 @@ extension DDBaseViewController {
         return true
     }
     
+    // 217. 存在重复元素
+    func containsDuplicate(_ nums: [Int]) -> Bool {
+        /*
+         给定一个整数数组，判断是否存在重复元素。如果任何值在数组中出现至少两次，函数返回 true。如果数组中每个元素都不相同，则返回 false。
+         示例 1:
+         输入: [1,2,3,1]
+         输出: true
+         */
+        var setDatas = Set<Int>()
+        for i in 0..<nums.count {
+            setDatas.insert(nums[i])
+            if setDatas.count != i+1 {
+                return true
+            }
+        }
+        return false
+    }
+    
+    // 219. 存在重复元素 II
+    func containsNearbyDuplicate(_ nums: [Int], _ k: Int) -> Bool {
+        /*
+         给定一个整数数组和一个整数 k，判断数组中是否存在两个不同的索引 i 和 j，使得 nums [i] = nums [j]，并且 i 和 j 的差的绝对值最大为 k。
+         示例 1:
+         输入: nums = [1,2,3,1], k = 3
+         输出: true
+         */
+        let total = nums.count
+        if total < 2 || k < 1 {
+            return false
+        }
+        var numsDic: [Int: Int] = [:]
+        for i in 0..<total {
+            if numsDic.keys.contains(nums[i]) {
+                if i - numsDic[nums[i]]! <= k {
+                    return true
+                }
+            }
+            numsDic[nums[i]] = i
+        }
+        return false
+    }
 }
 
 
