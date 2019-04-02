@@ -280,6 +280,38 @@ extension DDBaseViewController {
         }
         return result
     }
+    
+    // 234. 回文链表
+    func isPalindrome(_ head: ListNode?) -> Bool {
+        /*
+         请判断一个链表是否为回文链表
+         */
+        var fast = head
+        var slow = head
+        var prev: ListNode?
+        // 找到中点
+        while fast != nil {
+            fast = fast?.next != nil ? fast!.next!.next : fast?.next
+            slow = slow?.next
+        }
+        // 反转后半部分
+        while slow != nil {
+            let tmp = slow?.next
+            slow?.next = prev
+            prev = slow
+            slow = tmp
+        }
+        // 比较
+        var tmpHead = head
+        while tmpHead != nil && prev != nil {
+            if tmpHead?.val != prev?.val {
+                return false
+            }
+            tmpHead = tmpHead?.next
+            prev = prev?.next
+        }
+        return true
+    }
 }
 
 
