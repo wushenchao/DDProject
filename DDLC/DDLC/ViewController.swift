@@ -1074,6 +1074,75 @@ extension DDBaseViewController {
         }
         return false
     }
+    
+    // 231. 2的幂
+    func isPowerOfTwo(_ n: Int) -> Bool {
+        /*
+         给定一个整数，编写一个函数来判断它是否是 2 的幂次方。
+         */
+        
+        /*
+         if n < 1 {
+            return false
+         }
+         return n & (n - 1) == 0
+         */
+        
+        if n < 1 {
+            return false
+        }
+        if n <= 2 {
+            return true
+        }
+        var val = n
+        while val > 0 {
+            if val % 2 != 0 {
+                return false
+            }
+            val = val / 2
+            if val == 2 {
+                return true
+            }
+        }
+        return true
+    }
+    
+    // 326. 3的幂
+    func isPowerOfThree(_ n: Int) -> Bool {
+        /*
+         给定一个整数，写一个函数来判断它是否是 3 的幂次方。
+         */
+        if n < 1 || n == 2{
+            return false
+        }
+        if n <= 3 {
+            return true
+        }
+        var val = n
+        while val > 0 {
+            if val % 3 != 0 {
+                return false
+            }
+            val = val / 3
+            if val == 3 {
+                return true
+            }
+        }
+        return true
+    }
+    
+    // 342. 4的幂
+    func isPowerOfFour(_ num: Int) -> Bool {
+        /*
+         给定一个整数 (32 位有符号整数)，请编写一个函数来判断它是否是 4 的幂次方
+         */
+        // 小于0 或者不是2的倍数
+        if num < 0 || (num&(num-1) != 0) {
+            return false
+        }
+        // 4的幂次-1 一定是3的倍数 只是2的就余2
+        return (num - 1) % 3 == 0
+    }
 }
 
 
