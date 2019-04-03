@@ -1139,6 +1139,35 @@ extension DDBaseViewController {
         return true
     }
     
+    // 242. 有效的字母异位词
+    func isAnagram(_ s: String, _ t: String) -> Bool {
+        /*
+         给定两个字符串 s 和 t ，编写一个函数来判断 t 是否是 s 的一个字母异位词。
+         示例 1: 输入: s = "anagram", t = "nagaram" 输出: true
+         
+         return s.sorted() = t.sorted()
+         */
+        if s.count != t.count {
+            return false
+        }
+        var sChars: [Character: Int] = [:]
+        for char in s {
+            let count = sChars[char] ?? 0
+            sChars[char] = count + 1
+        }
+        for char in t {
+            let count = sChars[char] ?? 0
+            if count == 0 {return false}
+            sChars[char] = count - 1
+        }
+        for key in sChars.keys {
+            if sChars[key] != 0 {
+                return false
+            }
+        }
+        return true
+    }
+    
     // 326. 3的幂
     func isPowerOfThree(_ n: Int) -> Bool {
         /*
