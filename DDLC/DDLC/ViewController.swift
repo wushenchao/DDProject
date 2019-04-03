@@ -1186,6 +1186,29 @@ extension DDBaseViewController {
         return tmp
     }
     
+    // 263. 丑数
+    func isUgly(_ num: Int) -> Bool {
+        /*
+         丑数就是只包含质因数 2, 3, 5 的正整数。
+         示例 1: 输入: 6 输出: true
+         解释: 6 = 2 × 3
+         */
+        if num == 0 {
+            return false
+        }
+        var tmp = num
+        while tmp % 2 == 0 {
+            tmp /= 2
+        }
+        while tmp % 3 == 0 {
+            tmp /= 3
+        }
+        while tmp % 5 == 0 {
+            tmp /= 5
+        }
+        return tmp == 1
+    }
+    
     // 326. 3的幂
     func isPowerOfThree(_ n: Int) -> Bool {
         /*
