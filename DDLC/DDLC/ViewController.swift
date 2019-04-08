@@ -1209,6 +1209,71 @@ extension DDBaseViewController {
         return tmp == 1
     }
     
+    // 268. 缺失数字
+    func missingNumber(_ nums: [Int]) -> Int {
+        /*
+         给定一个包含 0, 1, 2, ..., n 中 n 个数的序列，找出 0 .. n 中没有出现在序列中的那个数。
+         */
+        var tmps = nums
+        var max = nums.count
+        for i in 0..<nums.count {
+            max ^= tmps[i]
+            max ^= i
+        }
+        return max
+    }
+    
+    
+    // 278. 移动零
+    func moveZeroes(_ nums: inout [Int]) {
+        /*
+         给定一个数组 nums，编写一个函数将所有 0 移动到数组的末尾，同时保持非零元素的相对顺序。
+         */
+        var j = 0
+        for i in 0..<nums.count {
+            if nums[i] != 0 {
+                let tmp = nums[i]
+                nums[i] = nums[j]
+                nums[j] = tmp
+                j+=1
+            }
+        }
+        while j < nums.count {
+            nums[j] = 0
+            j+=1
+        }
+    }
+    
+    // 290. 单词模式
+    func wordPattern(_ pattern: String, _ str: String) -> Bool {
+        /*
+         给定一种 pattern(模式) 和一个字符串 str ，判断 str 是否遵循相同的模式。
+         这里的遵循指完全匹配，例如， pattern 里的每个字母和字符串 str 中的每个非空单词之间存在着双向连接的对应模式。
+         示例1: 输入: pattern = "abba", str = "dog cat cat dog" 输出: true
+         */
+        let strs = str.split(separator: " ")
+        var rels: [Character: Substring] = [:]
+        var index = 0
+        if pattern.count != strs.count {
+            return false
+        }
+        for char in pattern {
+            let val = rels[char]
+            let indexVal = strs[index]
+            if val == nil {
+                if rels.values.contains(indexVal) {
+                    return false
+                }
+                rels[char] = indexVal
+            }
+            else if (val != nil && val! != indexVal) {
+                return false
+            }
+            index += 1
+        }
+        return true
+    }
+    
     // 326. 3的幂
     func isPowerOfThree(_ n: Int) -> Bool {
         /*
@@ -1412,15 +1477,6 @@ extension DDBaseViewController {
 extension DDBaseViewController {
     // 算法
     open func algorithmTest() {
-        let node = ListNode(1)
-        let node2 = ListNode(2)
-        let node3 = ListNode(3)
-        let node4 = ListNode(4)
-        let node5 = ListNode(5)
-        node.next = node2
-        node2.next = node3
-        node3.next = node4
-        node4.next = node5
-        print(reverseList1(node))
+        print(wordPattern("abba", "dog cat cat dog"))
     }
 }
