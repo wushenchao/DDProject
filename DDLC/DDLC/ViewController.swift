@@ -1373,6 +1373,48 @@ extension DDBaseViewController {
             last -= 1
         }
     }
+    
+    // 345. 反转字符串中的元音字母
+    func reverseVowels(_ s: String) -> String {
+       /*
+         编写一个函数，以字符串作为输入，反转该字符串中的元音字母。
+         */
+        let vos: [String] = ["a", "e", "i", "o", "u", "A", "E", "I", "O", "U"]
+        var vosIndex: [Int] = []
+        var vowels: [String] = []
+        var i = 0
+        for vo in s {
+            vowels.append(String(vo))
+            if vos.contains(String(vo)) {
+                vosIndex.append(i)
+            }
+            i += 1
+        }
+        var last = vosIndex.count - 1
+        var first = 0
+        while first < last {
+            let firstIndex = vosIndex[first]
+            let lastIndxe = vosIndex[last]
+            let tmp = vowels[firstIndex]
+            vowels[firstIndex] = vowels[lastIndxe]
+            vowels[lastIndxe] = tmp
+            first += 1
+            last -= 1
+        }
+        return vowels.joined(separator: "")
+    }
+    
+    // 349. 两个数组的交集
+    func intersection(_ nums1: [Int], _ nums2: [Int]) -> [Int] {
+        /*
+         给定两个数组，编写一个函数来计算它们的交集。
+         示例 1:
+         输入: nums1 = [1,2,2,1], nums2 = [2,2]
+         输出: [2]
+         */
+        
+        return []
+    }
 }
 
 
