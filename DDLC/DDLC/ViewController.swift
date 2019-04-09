@@ -1274,6 +1274,48 @@ extension DDBaseViewController {
         return true
     }
     
+    // 292. Nim游戏
+    func canWinNim(_ n: Int) -> Bool {
+        /*
+         你和你的朋友，两个人一起玩 Nim游戏：桌子上有一堆石头，每次你们轮流拿掉 1 - 3 块石头。 拿掉最后一块石头的人就是获胜者。你作为先手。
+         你们是聪明人，每一步都是最优解。 编写一个函数，来判断你是否可以在给定石头数量的情况下赢得游戏。
+         */
+        if n % 4 == 0 {
+            return false
+        }
+        return true
+    }
+    
+    
+    // 303. 区域和检索 - 数组不可变
+    class NumArray {
+        /*
+         给定一个整数数组  nums，求出数组从索引 i 到 j  (i ≤ j) 范围内元素的总和，包含 i,  j 两点。
+         示例：给定 nums = [-2, 0, 3, -5, 2, -1]，求和函数为 sumRange()
+         sumRange(0, 2) -> 1
+         sumRange(2, 5) -> -1
+         sumRange(0, 5) -> -3
+         说明: 你可以假设数组不可变。 会多次调用 sumRange 方法。
+         */
+        var sums: [Int] = []
+        
+        init(_ nums: [Int]) {
+            var tmp = 0
+            for num in nums {
+                tmp += num
+                sums.append(tmp)
+            }
+        }
+        
+        func sumRange(_ i: Int, _ j: Int) -> Int {
+            if i == 0 {
+                return sums[j]
+            }
+            return sums[j] - sums[i-1]
+        }
+    }
+    
+    
     // 326. 3的幂
     func isPowerOfThree(_ n: Int) -> Bool {
         /*
