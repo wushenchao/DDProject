@@ -1412,9 +1412,55 @@ extension DDBaseViewController {
          输入: nums1 = [1,2,2,1], nums2 = [2,2]
          输出: [2]
          */
-        
+        var res: [Int] = []
+        if nums1.count > nums2.count {
+            for val in nums2 {
+                if nums1.contains(val) && !res.contains(val) {
+                    res.append(val)
+                }
+            }
+        }
+        else {
+            for val in nums1 {
+                if nums2.contains(val) && !res.contains(val) {
+                    res.append(val)
+                }
+            }
+        }
+        return res
+    }
+    
+    // 350. 两个数组的交集 II
+    func intersect(_ nums1: [Int], _ nums2: [Int]) -> [Int] {
+        /*
+         给定两个数组，编写一个函数来计算它们的交集。
+         示例 1: 输入: nums1 = [1,2,2,1], nums2 = [2,2]
+         输出: [2,2]
+         输出结果中每个元素出现的次数，应与元素在两个数组中出现的次数一致。
+         我们可以不考虑输出结果的顺序。
+         */
+
         return []
     }
+    
+    // 367. 有效的完全平方数
+    func isPerfectSquare(_ num: Int) -> Bool {
+       /*
+         给定一个正整数 num，编写一个函数，如果 num 是一个完全平方数，则返回 True，否则返回 False。
+         说明：不要使用任何内置的库函数，如  sqrt。
+         
+         利用 1+3+5+7+9+…+(2n-1)=n^2，即完全平方数肯定是前n个连续奇数的和
+         */
+        var step = 1
+        var res = num
+        while res > 0 {
+            res -= step
+            step += 2
+        }
+        return res == 0
+    }
+    
+
 }
 
 
