@@ -1518,6 +1518,23 @@ extension DDBaseViewController {
         return res[char]!
     }
 
+    // 389. 找不同
+    func findTheDifference(_ s: String, _ t: String) -> Character {
+        /*
+         给定两个字符串 s 和 t，它们只包含小写字母。
+         字符串 t 由字符串 s 随机重排，然后在随机位置添加一个字母。请找出在 t 中被添加的字母。
+
+         示例:输入：
+         s = "abcd" t = "abcde"
+         输出：e
+         */
+        var sum = 0
+        for ch in s+t {
+            let assiv = ch.asciiValue
+            sum ^= Int(assiv!)
+        }
+        return Character(UnicodeScalar(sum)!)
+    }
 }
 
 
@@ -1664,7 +1681,7 @@ extension DDBaseViewController {
 extension DDBaseViewController {
     // 算法
     open func algorithmTest() {
-//        print(wordPattern("abba", "dog cat cat dog"))
-        print(getSum(-2, 2))
+        print(findTheDifference("abcde", "fabcde"))
+//        print(getSum(-2, 2))
     }
 }
