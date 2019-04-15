@@ -1460,6 +1460,63 @@ extension DDBaseViewController {
         return res == 0
     }
     
+    // 371. 两整数之和
+    func getSum(_ a: Int, _ b: Int) -> Int {
+        /*
+         不使用运算符 + 和 - ​​​​​​​，计算两整数 ​​​​​​​a 、b ​​​​​​​之和。
+         */
+        // 无进位相加
+        let res = a ^ b
+        // 得到进位
+        let carry = (a & b) << 1
+        if carry != 0 {
+            return getSum(res, carry)
+        }
+        return res
+    }
+    
+    // 383. 赎金信
+    func canConstruct(_ ransomNote: String, _ magazine: String) -> Bool {
+        /*
+         给定一个赎金信 (ransom) 字符串和一个杂志(magazine)字符串，判断第一个字符串ransom能不能由第二个字符串magazines里面的字符构成。如果可以构成，返回 true ；否则返回 false。
+         (题目说明：为了不暴露赎金信字迹，要从杂志上搜索各个需要的字母，组成单词来表达意思。)
+         注意：
+         你可以假设两个字符串均只含有小写字母。
+         canConstruct("a", "b") -> false
+         canConstruct("aa", "ab") -> false
+         canConstruct("aa", "aab") -> true
+         */
+        return false
+    }
+    
+    // 387. 字符串中的第一个唯一字符
+    func firstUniqChar(_ s: String) -> Int {
+        /*
+         给定一个字符串，找到它的第一个不重复的字符，并返回它的索引。如果不存在，则返回 -1。
+         案例: s = "leetcode" 返回 0.
+         s = "loveleetcode", 返回 2.
+         */
+        var chars: [Character] = []
+        var res: [Character: Int] = [:]
+        var index = 0
+        for char in s {
+            if res.keys.contains(char) {
+                if let ind = chars.index(of: char) {
+                    chars.remove(at: ind)
+                }
+            }
+            else {
+                chars.append(char)
+                res[char] = index
+            }
+            index += 1
+        }
+        if chars.count == 0 {
+            return -1
+        }
+        let char = chars[0]
+        return res[char]!
+    }
 
 }
 
@@ -1607,6 +1664,7 @@ extension DDBaseViewController {
 extension DDBaseViewController {
     // 算法
     open func algorithmTest() {
-        print(wordPattern("abba", "dog cat cat dog"))
+//        print(wordPattern("abba", "dog cat cat dog"))
+        print(getSum(-2, 2))
     }
 }
