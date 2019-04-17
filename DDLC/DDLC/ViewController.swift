@@ -508,6 +508,26 @@ extension DDBaseViewController {
         return root
     }
     
+    // 404. 左叶子之和
+    func sumOfLeftLeaves(_ root: TreeNode?) -> Int {
+        /*
+         计算给定二叉树的所有左叶子之和。
+         */
+        func sumOfLeaves(_ root: TreeNode?, _ left: Bool) -> Int {
+            if root == nil {
+                return 0
+            }
+            if root?.left == nil && root?.right == nil {
+                return left ? root!.val : 0
+            }
+            return sumOfLeaves(root?.left, true) + sumOfLeaves(root?.right, false)
+        }
+        
+        if root == nil {
+            return 0
+        }
+        return sumOfLeaves(root?.left, true) + sumOfLeaves(root?.right, false)
+    }
 }
 
 
