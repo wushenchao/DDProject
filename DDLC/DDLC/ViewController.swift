@@ -1535,6 +1535,59 @@ extension DDBaseViewController {
         }
         return Character(UnicodeScalar(sum)!)
     }
+    
+    // 400. 第N个数字
+    func findNthDigit(_ n: Int) -> Int {
+        /*
+         在无限的整数序列 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ...中找到第 n 个数字。
+         注意: n 是正数且在32为整形范围内 ( n < 2^31)。
+         示例 1: 输入: 3 输出: 3
+         示例 2: 输入: 11 输出: 0
+         */
+        if n < 10 {
+            return n
+        }
+        
+        return 0
+    }
+    
+    // 401. 二进制手表
+    func readBinaryWatch(_ num: Int) -> [String] {
+        /*
+         二进制手表顶部有 4 个 LED 代表小时（0-11），底部的 6 个 LED 代表分钟（0-59）。
+         每个 LED 代表一个 0 或 1，最低位在右侧。
+         例如，上面的二进制手表读取 “3:25”。
+         给定一个非负整数 n 代表当前 LED 亮着的数量，返回所有可能的时间。
+         案例:
+         输入: n = 1
+         返回: ["1:00", "2:00", "4:00", "8:00", "0:01", "0:02", "0:04", "0:08", "0:16", "0:32"]
+         */
+        
+        func oneNum(_ num: Int) -> Int {
+            var count = 0
+            var n = num
+            while n != 0 {
+                n = n & (n-1)
+                count += 1
+            }
+            return count
+        }
+        
+        var res: [String] = []
+        for i in 0..<12 {
+            for j in 0..<60 {
+                if oneNum(i) + oneNum(j) == num {
+                    if j < 10 {
+                        res.append("\(i):0\(j)")
+                    }
+                    else {
+                        res.append("\(i):\(j)")
+                    }
+                }
+            }
+        }
+        return res
+    }
 }
 
 
