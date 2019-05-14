@@ -528,6 +528,34 @@ extension DDBaseViewController {
         }
         return sumOfLeaves(root?.left, true) + sumOfLeaves(root?.right, false)
     }
+    
+    
+    // 437. 路径总和 III
+    func pathSum(_ root: TreeNode?, _ sum: Int) -> Int {
+        /*
+         给定一个二叉树，它的每个结点都存放着一个整数值。找出路径和等于给定数值的路径总数。
+         路径不需要从根节点开始，也不需要在叶子节点结束，但是路径方向必须是向下的（只能从父节点到子节点）。
+         二叉树不超过1000个节点，且节点数值范围是 [-1000000,1000000] 的整数。
+         */
+        guard root != nil else {
+            return 0
+        }
+        func _dfs(_ res: inout Int, _ root: TreeNode?, _ s: Int) {
+            guard root != nil else {
+                return
+            }
+            var s = s
+            s += root?.val ?? 0
+            if s == sum {
+                res += 1
+            }
+            _dfs(&res, root?.left, s)
+            _dfs(&res, root?.right, s)
+        }
+        var res = 0
+        _dfs(&res, root, 0)
+        return pathSum(root?.left, sum) + pathSum(root?.right, sum) + res
+    }
 }
 
 
@@ -1637,6 +1665,178 @@ extension DDBaseViewController {
         }
         return res
     }
+    
+    // 409. 最长回文串
+    func longestPalindrome(_ s: String) -> Int {
+        /*
+         给定一个包含大写字母和小写字母的字符串，找到通过这些字母构造成的最长的回文串。
+         在构造过程中，请注意区分大小写。比如 "Aa" 不能当做一个回文字符串。
+         注意: 假设字符串的长度不会超过 1010。
+         示例 1: 输入: "abccccdd"    输出: 7
+         解释: 我们可以构造的最长的回文串是"dccaccd", 它的长度是 7。
+         */
+        return 0
+    }
+    
+    // 412. Fizz Buzz
+    func fizzBuzz(_ n: Int) -> [String] {
+        /*
+         写一个程序，输出从 1 到 n 数字的字符串表示。
+         1. 如果 n 是3的倍数，输出“Fizz”；
+         2. 如果 n 是5的倍数，输出“Buzz”；
+         3. 如果 n 同时是3和5的倍数，输出 “FizzBuzz”。
+         */
+        var res: [String] = []
+        for i in 1...n {
+            if (i % 15 == 0) {
+                res.append("FizzBuzz")
+            } else if (i % 3 == 0) {
+                res.append("Fizz")
+            } else if (i % 5 == 0) {
+                res.append("Buzz")
+            } else {
+                res.append("\(i)")
+            }
+        }
+        return res
+    }
+    
+    // 414. 第三大的数
+    func thirdMax(_ nums: [Int]) -> Int {
+        /*
+         给定一个非空数组，返回此数组中第三大的数。如果不存在，则返回数组中最大的数。要求算法时间复杂度必须是O(n)。
+         示例 1: 输入: [3, 2, 1] 输出: 1 解释: 第三大的数是 1.
+         示例 2: 输入: [1, 2] 输出: 2 解释: 第三大的数不存在, 所以返回最大的数 2 .
+         示例 3: 输入: [2, 2, 3, 1] 输出: 1 解释: 注意，要求返回第三大的数，是指第三大且唯一出现的数。存在两个值为2的数，它们都排第二。
+         */
+        var res: [Int] = []
+        var ind = Int.min
+        for num in nums {
+            if ind == Int.min { ind = num }
+            if res.count < 3 {
+                if !res.contains(num) {
+                    res.append(num)
+                    if num < ind { ind = num }
+                }
+            }
+            else {
+                if num > ind {
+                    res.remove(at: res.index(of: ind)!)
+                    res.append(num)
+                    ind = res.min()!
+                }
+            }
+        }
+        if res.count < 3 {
+            return res.max()!
+        }
+        return ind
+    }
+    
+    // 415. 字符串相加
+    func addStrings(_ num1: String, _ num2: String) -> String {
+        /*
+         给定两个字符串形式的非负整数 num1 和num2 ，计算它们的和。
+         注意：
+         num1 和num2 的长度都小于 5100.
+         num1 和num2 都只包含数字 0-9.
+         num1 和num2 都不包含任何前导零。
+         你不能使用任何內建 BigInteger 库， 也不能直接将输入的字符串转换为整数形式。
+         */
+        var n1 = num1.reversed()
+        var n2 = num2.reversed()
+        if n1.count < n2.count {
+            n1 = num2.reversed()
+            n2 = num1.reversed()
+        }
+        var z = 0
+        var result = ""
+        for i in 0...n2.count {
+            let char1: Character = n1[n1.index(n1.startIndex, offsetBy: i)]
+            let char2: Character = n2[n2.index(n2.startIndex, offsetBy: i)]
+            var res = Int(String(char1))! + Int(String(char2))! + z
+            z = 0
+            if res > 9 {
+                res = res - 10
+                z = 1
+            }
+            result = "\(res)" + result
+        }
+        for i in n1.count...n2.count {
+            let char1: Character = n1[n1.index(n1.startIndex, offsetBy: i)]
+            var res = Int(String(char1))! + z
+            z = 0
+            if res > 9 {
+                res = res - 10
+                z = 1
+            }
+            result = "\(res)" + result
+        }
+        return result
+    }
+    
+    // 434. 字符串中的单词数
+    func countSegments(_ s: String) -> Int {
+        /*
+         统计字符串中的单词个数，这里的单词指的是连续的不是空格的字符。
+         请注意，你可以假定字符串里不包括任何不可打印的字符。
+         */
+        var count = 0
+        var canAdd = false
+        for char in s {
+            if String(char) == " " {
+                if canAdd { count += 1 }
+                canAdd = false
+            } else {
+                canAdd = true
+            }
+        }
+        if canAdd { count += 1 }
+        return count
+    }
+    
+    
+    // 438. 找到字符串中所有字母异位词
+    func findAnagrams(_ s: String, _ p: String) -> [Int] {
+        var pDic: [String: Int] = [:]
+        for p1 in p {
+            let key = String(p1)
+            let count = pDic[key] ?? 0
+            pDic[key] = count + 1
+        }
+        var sDatas: [String] = []
+        for s1 in s {
+            sDatas.append(String(s1))
+        }
+        let last = sDatas.count - p.count + 1
+        var result: [Int] = []
+        if last < 1 {
+            return result
+        }
+        for i in 0..<last {
+            let res = sDatas[i..<i+p.count]
+            var tmpPDic: [String: Int] = pDic
+            var is_continue = false
+            for re in res {
+                let count: Int = tmpPDic[re] ?? 0
+                if count == 0 {
+                    is_continue = true
+                    break
+                }
+                tmpPDic[re] = count - 1
+            }
+            if is_continue {
+                continue
+            }
+            for val in tmpPDic.values {
+                if val != 0 {
+                    continue
+                }
+            }
+            result.append(i)
+        }
+        return result
+    }
 }
 
 
@@ -1783,7 +1983,7 @@ extension DDBaseViewController {
 extension DDBaseViewController {
     // 算法
     open func algorithmTest() {
-        print(findTheDifference("abcde", "fabcde"))
+        print(addStrings("1234", "6789"))
 //        print(getSum(-2, 2))
     }
 }
