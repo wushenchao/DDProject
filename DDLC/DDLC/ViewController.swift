@@ -1798,42 +1798,54 @@ extension DDBaseViewController {
     
     // 438. 找到字符串中所有字母异位词
     func findAnagrams(_ s: String, _ p: String) -> [Int] {
-        var pDic: [String: Int] = [:]
-        for p1 in p {
-            let key = String(p1)
-            let count = pDic[key] ?? 0
-            pDic[key] = count + 1
-        }
-        var sDatas: [String] = []
-        for s1 in s {
-            sDatas.append(String(s1))
-        }
-        let last = sDatas.count - p.count + 1
         var result: [Int] = []
-        if last < 1 {
-            return result
+        var sArr: [String] = []
+        var pArr: [String:Int] = [:]
+        var pCount = 0
+        var tmp: [String:Int] = [:]
+        for s1 in s {
+            sArr.append(String(s1))
         }
-        for i in 0..<last {
-            let res = sDatas[i..<i+p.count]
-            var tmpPDic: [String: Int] = pDic
-            var is_continue = false
-            for re in res {
-                let count: Int = tmpPDic[re] ?? 0
-                if count == 0 {
-                    is_continue = true
-                    break
-                }
-                tmpPDic[re] = count - 1
-            }
-            if is_continue {
-                continue
-            }
-            for val in tmpPDic.values {
-                if val != 0 {
-                    continue
+        for p1 in p {
+            var key: String = String(p1)
+            let count: Int = pArr[key] ?? 0
+            pArr[key] = count + 1
+            pCount += 1
+        }
+        var left = 0
+        var right = 0
+        
+        func meet_condition() -> Bool {
+            // 判断是否满足条件
+            for k in pArr.keys {
+                let pv = pArr[k] ?? 0
+                let tv = tmp[k] ?? 0
+                if pv > tv {
+                    return false
                 }
             }
-            result.append(i)
+            return true
+        }
+        
+        while right < sArr.count {
+            let key: String = sArr[right]
+            let count: Int = tmp[key] ?? 0
+            tmp[key] = count + 1
+            while(meet_condition()) {
+                if right - left == pCount {
+                    // 如果两个刚好相等
+                    result.append(left)
+                }
+                let lkey: String = sArr[left]
+                let v = tmp[lkey] ?? 0
+                if v == 1 {
+                    tmp.removeValue(forKey: lkey)
+                } else {
+                    tmp[lkey] = v-1
+                }
+                left += 1
+            }
+            right += 1
         }
         return result
     }
