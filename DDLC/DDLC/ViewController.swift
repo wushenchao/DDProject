@@ -21,6 +21,28 @@ extension DDBaseViewController {
         }
     }
     
+    // 19. 删除链表的倒数第N个节点
+    func removeNthFromEnd(_ head: ListNode?, _ n: Int) -> ListNode? {
+        /*
+         给定一个链表，删除链表的倒数第 n 个节点，并且返回链表的头结点。
+         */
+        let pre: ListNode? = ListNode(0)
+        pre?.next = head
+        var first = pre
+        var second = pre
+        var num = n
+        while num != 0 {
+            num -= 1
+            second = second?.next
+        }
+        while second?.next != nil {
+            second = second?.next
+            first = first?.next
+        }
+        first?.next = first?.next?.next
+        return pre?.next
+    }
+    
     // 83. 删除排序链表中的重复元素
     func deleteDuplicates(_ head: ListNode?) -> ListNode? {
         /*
@@ -311,6 +333,24 @@ extension DDBaseViewController {
             prev = prev?.next
         }
         return true
+    }
+    
+    // 876. 链表的中间结点
+    func middleNode(_ head: ListNode?) -> ListNode? {
+        /*
+         给定一个带有头结点 head 的非空单链表，返回链表的中间结点。
+         如果有两个中间结点，则返回第二个中间结点。
+         */
+        var midle = head
+        var tmp = head
+        while tmp != nil {
+            if tmp?.next == nil {
+                break
+            }
+            midle = midle?.next
+            tmp = tmp?.next?.next
+        }
+        return midle
     }
 }
 
@@ -1848,6 +1888,26 @@ extension DDBaseViewController {
             right += 1
         }
         return result
+    }
+    
+    // 441. 排列硬币
+    func arrangeCoins(_ n: Int) -> Int {
+        /*
+         你总共有 n 枚硬币，你需要将它们摆成一个阶梯形状，第 k 行就必须正好有 k 枚硬币。
+         给定一个数字 n，找出可形成完整阶梯行的总行数。n 是一个非负整数，并且在32位有符号整型的范围内。
+         */
+        var left: Int = 0
+        var right: Int = n
+        while left < right {
+            let mid: Int = left + (right - left) / 2
+            if (mid * (mid + 1) / 2 <= n) {
+                left = mid
+            }
+            else {
+                right = mid - 1
+            }
+        }
+        return right
     }
 }
 
