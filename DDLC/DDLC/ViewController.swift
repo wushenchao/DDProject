@@ -20,6 +20,34 @@ extension DDBaseViewController {
             self.next = nil
         }
     }
+    // 2. 两数相加
+    func addTwoNumbers(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
+        /*
+         给出两个 非空 的链表用来表示两个非负的整数。其中，它们各自的位数是按照 逆序 的方式存储的，并且它们的每个节点只能存储 一位 数字。
+         如果，我们将这两个数相加起来，则会返回一个新的链表来表示它们的和。
+         您可以假设除了数字 0 之外，这两个数都不会以 0 开头。
+         */
+        let head: ListNode? = ListNode(0)
+        var pre = head
+        var l1 = l1
+        var l2 = l2
+        var tmp = 0
+        while l1 != nil || l2 != nil {
+            let vl1 = l1?.val ?? 0
+            let vl2 = l2?.val ?? 0
+            var v = vl1 + vl2 + tmp
+            tmp = v / 10
+            v = v % 10
+            l1 = l1?.next
+            l2 = l2?.next
+            pre?.next = ListNode(v)
+            pre = pre?.next
+        }
+        if tmp != 0 {
+            pre?.next = ListNode(tmp)
+        }
+        return head?.next
+    }
     
     // 19. 删除链表的倒数第N个节点
     func removeNthFromEnd(_ head: ListNode?, _ n: Int) -> ListNode? {
