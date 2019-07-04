@@ -43,6 +43,49 @@ extension DDBaseViewController {
         return pre?.next
     }
     
+    // 21. 合并两个有序链表
+    func mergeTwoLists(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
+        /*
+         将两个有序链表合并为一个新的有序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。
+         */
+        let head :ListNode? = ListNode(0)
+        var pre = head
+        var l1 = l1
+        var l2 = l2
+        while l1 != nil && l2 != nil {
+            if l1!.val <= l2!.val {
+                pre?.next = l1
+                l1 = l1?.next
+            }
+            else {
+                pre?.next = l2
+                l2 = l2?.next
+            }
+            pre = pre?.next
+        }
+        pre?.next = l1 == nil ? l2 : l1
+        return head?.next
+    }
+    
+    func mergeTwoLists2(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
+        /*
+         将两个有序链表合并为一个新的有序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。
+         */
+        if l1 == nil {
+            return l2
+        } else if l2 == nil {
+            return l1
+        } else {
+            if l1!.val < l2!.val {
+                l1?.next = mergeTwoLists(l1?.next, l2)
+                return l1
+            } else {
+                l2?.next = mergeTwoLists(l1, l2?.next)
+                return l2
+            }
+        }
+    }
+    
     // 83. 删除排序链表中的重复元素
     func deleteDuplicates(_ head: ListNode?) -> ListNode? {
         /*
@@ -58,40 +101,6 @@ extension DDBaseViewController {
             }
         }
         return head
-    }
-    
-    // 88. 合并两个有序数组
-    func merge(_ nums1: inout [Int], _ m: Int, _ nums2: [Int], _ n: Int) {
-        /*
-         给定两个有序整数数组 nums1 和 nums2，将 nums2 合并到 nums1 中，使得 num1 成为一个有序数组。
-         说明:
-         初始化 nums1 和 nums2 的元素数量分别为 m 和 n。
-         你可以假设 nums1 有足够的空间（空间大小大于或等于 m + n）来保存 nums2 中的元素。
-         输入:
-         nums1 = [1,2,3,0,0,0], m = 3
-         nums2 = [2,5,6],       n = 3
-         
-         输出: [1,2,2,3,5,6]
-         */
-        var m_index = m - 1
-        var n_index = n - 1
-        var c_index = m + n - 1
-        while (m_index >= 0) && (n_index >= 0) {
-            if nums1[m_index] > nums2[n_index] {
-                nums1[c_index] = nums1[m_index]
-                m_index -= 1
-            }
-            else {
-                nums1[c_index] = nums2[n_index]
-                n_index -= 1
-            }
-            c_index -= 1
-        }
-        while (n_index >= 0) {
-            nums1[c_index] = nums2[n_index]
-            c_index -= 1
-            n_index -= 1
-        }
     }
     
     // 141. 环形链表
@@ -720,6 +729,40 @@ extension DDBaseViewController {
                 f2 = f3
             }
             return f3
+        }
+    }
+    
+    // 88. 合并两个有序数组
+    func merge(_ nums1: inout [Int], _ m: Int, _ nums2: [Int], _ n: Int) {
+        /*
+         给定两个有序整数数组 nums1 和 nums2，将 nums2 合并到 nums1 中，使得 num1 成为一个有序数组。
+         说明:
+         初始化 nums1 和 nums2 的元素数量分别为 m 和 n。
+         你可以假设 nums1 有足够的空间（空间大小大于或等于 m + n）来保存 nums2 中的元素。
+         输入:
+         nums1 = [1,2,3,0,0,0], m = 3
+         nums2 = [2,5,6],       n = 3
+         
+         输出: [1,2,2,3,5,6]
+         */
+        var m_index = m - 1
+        var n_index = n - 1
+        var c_index = m + n - 1
+        while (m_index >= 0) && (n_index >= 0) {
+            if nums1[m_index] > nums2[n_index] {
+                nums1[c_index] = nums1[m_index]
+                m_index -= 1
+            }
+            else {
+                nums1[c_index] = nums2[n_index]
+                n_index -= 1
+            }
+            c_index -= 1
+        }
+        while (n_index >= 0) {
+            nums1[c_index] = nums2[n_index]
+            c_index -= 1
+            n_index -= 1
         }
     }
     
