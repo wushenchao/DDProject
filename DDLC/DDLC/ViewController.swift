@@ -114,6 +114,100 @@ extension DDBaseViewController {
         }
     }
     
+    // 24. 两两交换链表中的节点
+    func swapPairs(_ head: ListNode?) -> ListNode? {
+        /*
+         给定一个链表，两两交换其中相邻的节点，并返回交换后的链表。
+         你不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。
+         给定 1->2->3->4, 你应该返回 2->1->4->3.
+         */
+        let pre : ListNode? = ListNode(0)
+        pre?.next = head
+        var temp = pre
+        while temp?.next != nil && temp?.next?.next != nil {
+            let node1 = temp?.next
+            let node2 = temp?.next?.next
+            temp?.next = node2
+            node1?.next = node2?.next
+            node2?.next = node1
+            temp = node1
+        }
+        return pre?.next
+    }
+    
+    // 61. 旋转链表
+    func rotateRight(_ head: ListNode?, _ k: Int) -> ListNode? {
+        /*
+         给定一个链表，旋转链表，将链表每个节点向右移动 k 个位置，其中 k 是非负数。
+         输入: 1->2->3->4->5->NULL, k = 2
+         输出: 4->5->1->2->3->NULL
+         解释:
+         向右旋转 1 步: 5->1->2->3->4->NULL
+         向右旋转 2 步: 4->5->1->2->3->NULL
+         */
+        #warning("fix")
+        let pre : ListNode? = ListNode(0)
+        pre?.next = head
+        var targetNode: ListNode?
+        var temp = pre
+        var count = 0
+        while temp?.next != nil {
+            temp = temp?.next
+            if count == k {
+                targetNode = temp
+            }
+            count += 1
+        }
+        if targetNode == nil {
+            count = k % count
+            targetNode = pre
+            while count != 1 {
+                count -= 1
+                targetNode = targetNode?.next
+            }
+        }
+        temp?.next = pre?.next
+        pre?.next = targetNode?.next
+        targetNode?.next = nil
+        return pre?.next
+    }
+    
+    // 82. 删除排序链表中的重复元素
+    func deleteDuplicates2(_ head: ListNode?) -> ListNode? {
+        /*
+         给定一个排序链表，删除所有含有重复数字的节点，只保留原始链表中 没有重复出现 的数字。
+         输入: 1->2->3->3->4->4->5
+         输出: 1->2->5
+         */
+        let pre: ListNode? = ListNode(0)
+        pre?.next = head
+        var temp = pre
+        var del: Int = 0
+        while temp?.next != nil {
+            var isBreak = false
+            if temp?.next?.next == nil {
+                isBreak = true
+                temp?.next?.next = ListNode(-1)
+            }
+            if temp?.next?.val == temp?.next?.next?.val {
+                temp?.next = temp?.next?.next?.next
+                del = temp?.next?.val ?? 0
+            } else {
+                if del != 0 {
+                    temp?.next = temp?.next?.next
+                    del = 0
+                } else {
+                    temp = temp?.next
+                }
+            }
+            if isBreak {
+                break
+            }
+        }
+        temp?.next = nil
+        return pre?.next
+    }
+    
     // 83. 删除排序链表中的重复元素
     func deleteDuplicates(_ head: ListNode?) -> ListNode? {
         /*
@@ -1980,6 +2074,104 @@ extension DDBaseViewController {
         }
         return right
     }
+    
+    // 822. 翻转卡片游戏
+    func flipgame(_ fronts: [Int], _ backs: [Int]) -> Int {
+        /*
+         在桌子上有 N 张卡片，每张卡片的正面和背面都写着一个正数（正面与背面上的数有可能不一样）。
+         我们可以先翻转任意张卡片，然后选择其中一张卡片。
+         如果选中的那张卡片背面的数字 X 与任意一张卡片的正面的数字都不同，那么这个数字是我们想要的数字。
+         哪个数是这些想要的数字中最小的数（找到这些数中的最小值）呢？如果没有一个数字符合要求的，输出 0。
+         其中, fronts[i] 和 backs[i] 分别代表第 i 张卡片的正面和背面的数字。
+         如果我们通过翻转卡片来交换正面与背面上的数，那么当初在正面的数就变成背面的数，背面的数就变成正面的数
+         输入：fronts = [1,2,4,4,7], backs = [1,3,4,1,3]
+         输出：2
+         */
+        let count: Int = fronts.count
+        var blacks: [Int] = []
+        for i in 0..<count {// 获取正面or背面数字
+            let fv: Int = fronts[i]
+            let bv: Int = backs[i]
+            if fv == bv {
+                blacks.append(fv)
+            }
+        }
+        var res = 0
+        for i in 0..<count {
+            let fv: Int = fronts[i]
+            let bv: Int = backs[i]
+            if !blacks.contains(fv) {
+                if res == 0 {
+                    res = fv
+                }
+                res = fv < res ? fv : res
+            }
+            if !blacks.contains(bv) {
+                if res == 0 {
+                    res = bv
+                }
+                res = bv < res ? bv : res
+            }
+        }
+        return res
+    }
+    
+    // 134. 加油站
+    func canCompleteCircuit(_ gas: [Int], _ cost: [Int]) -> Int {
+        /*
+         在一条环路上有 N 个加油站，其中第 i 个加油站有汽油 gas[i] 升。
+         你有一辆油箱容量无限的的汽车，从第 i 个加油站开往第 i+1 个加油站需要消耗汽油 cost[i] 升。你从其中的一个加油站出发，开始时油箱为空。
+         如果你可以绕环路行驶一周，则返回出发时加油站的编号，否则返回 -1。
+         说明:
+         如果题目有解，该答案即为唯一答案。
+         输入数组均为非空数组，且长度相同。
+         输入数组中的元素均为非负数。
+         示例 1:
+            gas  = [1,2,3,4,5]
+            cost = [3,4,5,1,2]
+            输出: 3
+         */
+        let count = gas.count
+        for i in 0..<count {
+            if gas[i] >= cost[i] {
+                var tempGas = gas
+                var tempCost = cost
+                
+                var aGas: [Int] = Array(tempGas[i..<count] + tempGas[0..<i])
+                var aCost: [Int] = Array(tempCost[i..<count] + tempCost[0..<i])
+                var res = 0
+                for j in 0..<count {
+                    let gv = aGas[j]
+                    let cv = aCost[j]
+                    res = res + gv - cv
+                    if res < 0 {
+                        break
+                    }
+                }
+                if res >= 0 {
+                    return i
+                }
+            }
+        }
+        return -1
+    }
+    
+    // 134. 加油站
+    func canCompleteCircuit1(_ gas: [Int], _ cost: [Int]) -> Int {
+        var total = 0
+        var sum = 0
+        var start = 0
+        let count = gas.count
+        for i in 0..<count {
+            total += gas[i] - cost[i]
+            sum += gas[i] - cost[i]
+            if sum < 0 {
+                start = i+1
+                sum = 0
+            }
+        }
+        return total < 0 ? -1 : start
+    }
 }
 
 
@@ -2126,7 +2318,7 @@ extension DDBaseViewController {
 extension DDBaseViewController {
     // 算法
     open func algorithmTest() {
-        print(addStrings("1234", "6789"))
+        print(canCompleteCircuit1([1,2,3,4,5], [3,4,5,1,2]))
 //        print(getSum(-2, 2))
     }
 }
