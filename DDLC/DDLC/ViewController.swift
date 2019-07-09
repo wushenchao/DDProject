@@ -1950,13 +1950,14 @@ extension DDBaseViewController {
          */
         var n1 = num1.reversed()
         var n2 = num2.reversed()
-        if n1.count < n2.count {
-            n1 = num2.reversed()
-            n2 = num1.reversed()
+        if n1.count > n2.count {
+            let temp = n1
+            n1 = n2
+            n2 = temp
         }
-        var z = 0
         var result = ""
-        for i in 0...n2.count {
+        var z = 0
+        for i in 0..<n1.count {
             let char1: Character = n1[n1.index(n1.startIndex, offsetBy: i)]
             let char2: Character = n2[n2.index(n2.startIndex, offsetBy: i)]
             var res = Int(String(char1))! + Int(String(char2))! + z
@@ -1967,9 +1968,9 @@ extension DDBaseViewController {
             }
             result = "\(res)" + result
         }
-        for i in n1.count...n2.count {
-            let char1: Character = n1[n1.index(n1.startIndex, offsetBy: i)]
-            var res = Int(String(char1))! + z
+        for i in n1.count..<n2.count {
+            let char2: Character = n2[n2.index(n2.startIndex, offsetBy: i)]
+            var res = Int(String(char2))! + z
             z = 0
             if res > 9 {
                 res = res - 10
@@ -1977,7 +1978,36 @@ extension DDBaseViewController {
             }
             result = "\(res)" + result
         }
+        if z != 0 {
+            result = "1" + result
+        }
         return result
+    }
+    
+    // 415. 字符串相加
+    func addStrings1(_ num1: String, _ num2: String) -> String {
+        var arr1: [UnicodeScalar] = num1.unicodeScalars.reversed()
+        var arr2: [UnicodeScalar] = num2.unicodeScalars.reversed()
+        var res = ""
+        var index = 0
+        var carry = 0
+        while index < arr1.count || index < arr2.count {
+            var n1 = 0
+            var n2 = 0
+            if index < arr1.count {
+                let char = arr1[index]
+                n1 = Int(char.value) - Int("0".unicodeScalars.first!.value)
+            }
+            if index < arr2.count {
+                let char = arr2[index]
+                n2 = Int(char.value) - Int("0".unicodeScalars.first!.value)
+            }
+            let sum = n1 + n2 + carry
+            res = String(sum % 10) + res
+            carry = sum / 10
+            index += 1
+        }
+        return res
     }
     
     // 434. 字符串中的单词数
@@ -2172,6 +2202,58 @@ extension DDBaseViewController {
         }
         return total < 0 ? -1 : start
     }
+    
+    // 678. 有效的括号字符串
+    #warning("fixed")
+    func checkValidString(_ s: String) -> Bool {
+        var star = 0
+        var startLeft = 0
+        var left = 0
+        for chr in s {
+            let v: String = String(chr)
+            if v == "*" {
+                if left > 0 {
+                    left -= 1
+                    startLeft += 1
+                } else {
+                    star += 1
+                }
+            }
+            else if (v == "(") {
+                left += 1
+            }
+            else if (v == ")") {
+                if left > 0 {
+                    left -= 1
+                }
+                else if (startLeft > 0) {
+                    startLeft -= 1
+                    star += 1
+                }
+                else {
+                    return false
+                }
+            }
+        }
+        return left <= 0
+    }
+    
+    #warning("fixed")
+    func replaceWords(_ dict: [String], _ sentence: String) -> String {
+        var sentences: [String] = sentence.components(separatedBy: " ")
+        var index = 0
+        for s in sentences {
+            for dic in dict {
+                if s.starts(with: dic) {
+                    sentences[index] = dic
+                    break
+                }
+            }
+            index += 1
+        }
+        return sentences.joined(separator: " ")
+    }
+    
 }
 
 
@@ -2318,7 +2400,7 @@ extension DDBaseViewController {
 extension DDBaseViewController {
     // 算法
     open func algorithmTest() {
-        print(canCompleteCircuit1([1,2,3,4,5], [3,4,5,1,2]))
-//        print(getSum(-2, 2))
+//        print(canCompleteCircuit1([1,2,3,4,5], [3,4,5,1,2]))
+        print(checkValidString("(*()"))
     }
 }
