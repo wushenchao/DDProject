@@ -145,31 +145,25 @@ extension DDBaseViewController {
          向右旋转 1 步: 5->1->2->3->4->NULL
          向右旋转 2 步: 4->5->1->2->3->NULL
          */
-        #warning("fix")
-        let pre : ListNode? = ListNode(0)
-        pre?.next = head
-        var targetNode: ListNode?
-        var temp = pre
-        var count = 0
-        while temp?.next != nil {
-            temp = temp?.next
-            if count == k {
-                targetNode = temp
-            }
+        if head == nil || head?.next == nil {
+            return head
+        }
+        var pre = head
+        var count = 1
+        while pre?.next != nil {
+            pre = pre?.next
             count += 1
         }
-        if targetNode == nil {
-            count = k % count
-            targetNode = pre
-            while count != 1 {
-                count -= 1
-                targetNode = targetNode?.next
-            }
+        // 首尾相连(新首节点为尾部节点)
+        pre?.next = head
+        var step = count - k % count
+        while step != 0 {
+            step -= 1
+            pre = pre?.next
         }
-        temp?.next = pre?.next
-        pre?.next = targetNode?.next
-        targetNode?.next = nil
-        return pre?.next
+        let newHead = pre?.next
+        pre?.next = nil
+        return newHead
     }
     
     // 82. 删除排序链表中的重复元素
@@ -2254,6 +2248,26 @@ extension DDBaseViewController {
         return sentences.joined(separator: " ")
     }
     
+    func containsDuplicate1(_ nums: [Int]) -> Bool {
+        var k = 1
+        for n in nums {
+            k = n ^ k
+        }
+        return k == 1
+    }
+    
+//    func stoneGame(_ piles: [Int]) -> Bool {
+//        var lsum = 0
+//        var rsum = 0
+//        var lindex = 0
+//        var rindex = piles.count - 1
+//        while lindex < rindex {
+//            let lv = piles[lindex]
+//            let rv = piles[rindex]
+//            if lv > rv
+//        }
+//        return false
+//    }
 }
 
 
