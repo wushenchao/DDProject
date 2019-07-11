@@ -175,30 +175,29 @@ extension DDBaseViewController {
          */
         let pre: ListNode? = ListNode(0)
         pre?.next = head
-        var temp = pre
-        var del: Int = 0
-        while temp?.next != nil {
-            var isBreak = false
-            if temp?.next?.next == nil {
-                isBreak = true
-                temp?.next?.next = ListNode(-1)
+        var del = false
+        var pre_node = pre
+        var cur_node = pre?.next
+        while cur_node != nil && cur_node?.next != nil {
+            if cur_node?.val == cur_node?.next?.val {
+                del = true
+                cur_node?.next = cur_node?.next?.next
             }
-            if temp?.next?.val == temp?.next?.next?.val {
-                temp?.next = temp?.next?.next?.next
-                del = temp?.next?.val ?? 0
-            } else {
-                if del != 0 {
-                    temp?.next = temp?.next?.next
-                    del = 0
-                } else {
-                    temp = temp?.next
+            else {
+                if del == true {
+                    del = false
+                    pre_node?.next = cur_node?.next
+                    cur_node = pre_node?.next
+                }
+                else {
+                    cur_node = cur_node?.next
+                    pre_node = pre_node?.next
                 }
             }
-            if isBreak {
-                break
-            }
         }
-        temp?.next = nil
+        if del == true {
+            pre_node?.next = cur_node?.next
+        }
         return pre?.next
     }
     
@@ -206,6 +205,8 @@ extension DDBaseViewController {
     func deleteDuplicates(_ head: ListNode?) -> ListNode? {
         /*
          给定一个排序链表，删除所有重复的元素，使得每个元素只出现一次。
+         输入: 1->2->3->3->4->4->5
+         输出: 1->2->3->4->5
          */
         var current = head
         while (current != nil) && ((current?.next) != nil) {
