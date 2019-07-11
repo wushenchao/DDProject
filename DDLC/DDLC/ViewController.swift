@@ -220,6 +220,36 @@ extension DDBaseViewController {
         return head
     }
     
+    // 86. 分隔链表
+    func partition(_ head: ListNode?, _ x: Int) -> ListNode? {
+        /*
+         给定一个链表和一个特定值 x，对链表进行分隔，使得所有小于 x 的节点都在大于或
+         等于 x 的节点之前。你应当保留两个分区中每个节点的初始相对位置。
+         示例:
+         输入: head = 1->4->3->2->5->2, x = 3
+         输出: 1->2->2->4->3->5
+         */
+        let pre_l: ListNode? = ListNode(0)
+        let pre_r: ListNode? = ListNode(0)
+        var pre_ll = pre_l
+        var pre_rr = pre_r
+        var temp_head = head
+        while temp_head != nil {
+            let v: Int = temp_head!.val
+            if v < x {
+                pre_ll?.next = ListNode(v)
+                pre_ll = pre_ll?.next
+            }
+            else  {
+                pre_rr?.next = ListNode(v)
+                pre_rr = pre_rr?.next
+            }
+            temp_head = temp_head?.next
+        }
+        pre_ll?.next = pre_r?.next
+        return pre_l?.next
+    }
+    
     // 141. 环形链表
     func hasCycle(_ root: ListNode?, _ index: Int) -> Bool {
         /*
