@@ -8,772 +8,9 @@
 
 import UIKit
 
-// MARK: - ListNode
-extension DDBaseViewController {
-
-    /// Definition for singly-linked list.
-    public class ListNode {
-        public var val: Int
-        public var next: ListNode?
-        public init(_ val: Int) {
-            self.val = val
-            self.next = nil
-        }
-    }
-    // 2. 两数相加
-    func addTwoNumbers(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
-        /*
-         给出两个 非空 的链表用来表示两个非负的整数。其中，它们各自的位数是按照 逆序 的方式存储的，并且它们的每个节点只能存储 一位 数字。
-         如果，我们将这两个数相加起来，则会返回一个新的链表来表示它们的和。
-         您可以假设除了数字 0 之外，这两个数都不会以 0 开头。
-         */
-        let head: ListNode? = ListNode(0)
-        var pre = head
-        var l1 = l1
-        var l2 = l2
-        var tmp = 0
-        while l1 != nil || l2 != nil {
-            let vl1 = l1?.val ?? 0
-            let vl2 = l2?.val ?? 0
-            var v = vl1 + vl2 + tmp
-            tmp = v / 10
-            v = v % 10
-            l1 = l1?.next
-            l2 = l2?.next
-            pre?.next = ListNode(v)
-            pre = pre?.next
-        }
-        if tmp != 0 {
-            pre?.next = ListNode(tmp)
-        }
-        return head?.next
-    }
-    
-    // 19. 删除链表的倒数第N个节点
-    func removeNthFromEnd(_ head: ListNode?, _ n: Int) -> ListNode? {
-        /*
-         给定一个链表，删除链表的倒数第 n 个节点，并且返回链表的头结点。
-         */
-        let pre: ListNode? = ListNode(0)
-        pre?.next = head
-        var first = pre
-        var second = pre
-        var num = n
-        while num != 0 {
-            num -= 1
-            second = second?.next
-        }
-        while second?.next != nil {
-            second = second?.next
-            first = first?.next
-        }
-        first?.next = first?.next?.next
-        return pre?.next
-    }
-    
-    // 21. 合并两个有序链表
-    func mergeTwoLists(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
-        /*
-         将两个有序链表合并为一个新的有序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。
-         */
-        let head :ListNode? = ListNode(0)
-        var pre = head
-        var l1 = l1
-        var l2 = l2
-        while l1 != nil && l2 != nil {
-            if l1!.val <= l2!.val {
-                pre?.next = l1
-                l1 = l1?.next
-            }
-            else {
-                pre?.next = l2
-                l2 = l2?.next
-            }
-            pre = pre?.next
-        }
-        pre?.next = l1 == nil ? l2 : l1
-        return head?.next
-    }
-    
-    func mergeTwoLists2(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
-        /*
-         将两个有序链表合并为一个新的有序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。
-         */
-        if l1 == nil {
-            return l2
-        } else if l2 == nil {
-            return l1
-        } else {
-            if l1!.val < l2!.val {
-                l1?.next = mergeTwoLists(l1?.next, l2)
-                return l1
-            } else {
-                l2?.next = mergeTwoLists(l1, l2?.next)
-                return l2
-            }
-        }
-    }
-    
-    // 24. 两两交换链表中的节点
-    func swapPairs(_ head: ListNode?) -> ListNode? {
-        /*
-         给定一个链表，两两交换其中相邻的节点，并返回交换后的链表。
-         你不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。
-         给定 1->2->3->4, 你应该返回 2->1->4->3.
-         */
-        let pre : ListNode? = ListNode(0)
-        pre?.next = head
-        var temp = pre
-        while temp?.next != nil && temp?.next?.next != nil {
-            let node1 = temp?.next
-            let node2 = temp?.next?.next
-            temp?.next = node2
-            node1?.next = node2?.next
-            node2?.next = node1
-            temp = node1
-        }
-        return pre?.next
-    }
-    
-    // 61. 旋转链表
-    func rotateRight(_ head: ListNode?, _ k: Int) -> ListNode? {
-        /*
-         给定一个链表，旋转链表，将链表每个节点向右移动 k 个位置，其中 k 是非负数。
-         输入: 1->2->3->4->5->NULL, k = 2
-         输出: 4->5->1->2->3->NULL
-         解释:
-         向右旋转 1 步: 5->1->2->3->4->NULL
-         向右旋转 2 步: 4->5->1->2->3->NULL
-         */
-        if head == nil || head?.next == nil {
-            return head
-        }
-        var pre = head
-        var count = 1
-        while pre?.next != nil {
-            pre = pre?.next
-            count += 1
-        }
-        // 首尾相连(新首节点为尾部节点)
-        pre?.next = head
-        var step = count - k % count
-        while step != 0 {
-            step -= 1
-            pre = pre?.next
-        }
-        let newHead = pre?.next
-        pre?.next = nil
-        return newHead
-    }
-    
-    // 82. 删除排序链表中的重复元素
-    func deleteDuplicates2(_ head: ListNode?) -> ListNode? {
-        /*
-         给定一个排序链表，删除所有含有重复数字的节点，只保留原始链表中 没有重复出现 的数字。
-         输入: 1->2->3->3->4->4->5
-         输出: 1->2->5
-         */
-        let pre: ListNode? = ListNode(0)
-        pre?.next = head
-        var del = false
-        var pre_node = pre
-        var cur_node = pre?.next
-        while cur_node != nil && cur_node?.next != nil {
-            if cur_node?.val == cur_node?.next?.val {
-                del = true
-                cur_node?.next = cur_node?.next?.next
-            }
-            else {
-                if del == true {
-                    del = false
-                    pre_node?.next = cur_node?.next
-                    cur_node = pre_node?.next
-                }
-                else {
-                    cur_node = cur_node?.next
-                    pre_node = pre_node?.next
-                }
-            }
-        }
-        if del == true {
-            pre_node?.next = cur_node?.next
-        }
-        return pre?.next
-    }
-    
-    // 83. 删除排序链表中的重复元素
-    func deleteDuplicates(_ head: ListNode?) -> ListNode? {
-        /*
-         给定一个排序链表，删除所有重复的元素，使得每个元素只出现一次。
-         输入: 1->2->3->3->4->4->5
-         输出: 1->2->3->4->5
-         */
-        var current = head
-        while (current != nil) && ((current?.next) != nil) {
-            if current?.val == current?.next?.val {
-                current?.next = current?.next?.next
-            }
-            else {
-                current = current?.next
-            }
-        }
-        return head
-    }
-    
-    // 86. 分隔链表
-    func partition(_ head: ListNode?, _ x: Int) -> ListNode? {
-        /*
-         给定一个链表和一个特定值 x，对链表进行分隔，使得所有小于 x 的节点都在大于或
-         等于 x 的节点之前。你应当保留两个分区中每个节点的初始相对位置。
-         示例:
-         输入: head = 1->4->3->2->5->2, x = 3
-         输出: 1->2->2->4->3->5
-         */
-        let pre_l: ListNode? = ListNode(0)
-        let pre_r: ListNode? = ListNode(0)
-        var pre_ll = pre_l
-        var pre_rr = pre_r
-        var temp_head = head
-        while temp_head != nil {
-            let v: Int = temp_head!.val
-            if v < x {
-                pre_ll?.next = ListNode(v)
-                pre_ll = pre_ll?.next
-            }
-            else  {
-                pre_rr?.next = ListNode(v)
-                pre_rr = pre_rr?.next
-            }
-            temp_head = temp_head?.next
-        }
-        pre_ll?.next = pre_r?.next
-        return pre_l?.next
-    }
-    
-    // 141. 环形链表
-    func hasCycle(_ root: ListNode?, _ index: Int) -> Bool {
-        /*
-         给定一个链表，判断链表中是否有环。
-         为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是 -1，则在该链表中没有环。
-         */
-        if root == nil || root?.next == nil {
-            return false
-        }
-        var slow: ListNode? = root
-        var fast: ListNode? = root?.next
-        while slow?.val != fast?.val {
-            if fast == nil || fast?.next == nil {
-                return false
-            }
-            slow = slow?.next
-            fast = fast?.next?.next
-        }
-        return false
-    }
-    
-    // 155. 最小栈
-    class MinStack {
-        /*
-         设计一个支持 push，pop，top 操作，并能在常数时间内检索到最小元素的栈。
-         push(x) -- 将元素 x 推入栈中。
-         pop() -- 删除栈顶的元素。
-         top() -- 获取栈顶元素。
-         getMin() -- 检索栈中的最小元素。
-         */
-        /** initialize your data structure here. */
-        var minList: ListNode?
-        var list: ListNode?
-        var lastNode: ListNode?
-        init() {
-        }
-        
-        func push(_ x: Int) {
-            guard (minList != nil) && (list != nil) else {
-                minList = ListNode(x)
-                list = ListNode(x)
-                lastNode = list
-                return
-            }
-            let newNode = ListNode(x)
-            lastNode?.next = newNode
-            lastNode = newNode
-            
-            // 获取该节点插入的位置
-            var minNode = minList
-            while minNode!.val < x {
-                if minNode?.next != nil {
-                    minNode = minNode?.next
-                }
-            }
-            let minNewNode = ListNode(x)
-            if minNode?.next == nil {
-                minNode?.next = minNewNode
-            }
-            else {
-                let tmp = minNode?.next
-                minNewNode.next = tmp
-                minNode?.next = minNewNode
-            }
-        }
-        
-        func pop() {
-            guard list != nil else {
-                return
-            }
-            // 只剩最后一个
-            guard list?.next != nil else {
-                list = nil
-                lastNode = nil
-                minList = nil
-                return
-            }
-            var tmp = list
-            while tmp != nil {
-                if tmp?.next?.next != nil {
-                    tmp = tmp?.next
-                }
-                else {
-                    break
-                }
-            }
-            tmp?.next = nil
-            // 更新最小链表
-            var tmpMinList = minList
-            while tmpMinList?.val != tmp?.val {
-                if tmpMinList?.next?.val != tmp?.val {
-                    tmpMinList = tmpMinList?.next
-                }
-                else {
-                    let nextTmp = tmpMinList?.next
-                    tmpMinList?.next = nextTmp?.next
-                }
-            }
-        }
-        
-        func top() -> Int {
-            if lastNode != nil {
-                return lastNode!.val
-            }
-            return 0
-        }
-        
-        func getMin() -> Int {
-            if minList != nil {
-                return minList!.val
-            }
-            return 0
-        }
-    }
-    
-    // 160. 相交链表
-    func crossLinked(_ headOne: ListNode?, _ headTwo: ListNode?) -> Bool {
-        /*
-         编写一个程序，找到两个单链表相交的起始节点。
-         如果两个链表没有交点，返回 null.
-         在返回结果后，两个链表仍须保持原有的结构。
-         可假定整个链表结构中没有循环。
-         程序尽量满足 O(n) 时间复杂度，且仅用 O(1) 内存。
-         */
-        
-        return false
-    }
-    
-    // 203. 移除链表元素
-    func removeElements(_ head: ListNode?, _ val: Int) -> ListNode? {
-        /*
-         删除链表中等于给定值 val 的所有节点。
-         示例:
-         输入: 1->2->6->3->4->5->6, val = 6
-         输出: 1->2->3->4->5
-         */
-        if head == nil {
-            return nil
-        }
-        head?.next = removeElements(head?.next, val)
-        return head?.val == val ? head?.next : head
-    }
-    
-    // 204. 计数质数
-    func countPrimes(_ n: Int) -> Int {
-        /*
-         统计所有小于非负整数 n 的质数的数量。
-         示例: 输入: 10 输出: 4
-         解释: 小于 10 的质数一共有 4 个, 它们是 2, 3, 5, 7 。
-         厄拉多塞筛法:
-         比如说求20以内质数的个数,首先0,1不是质数.2是第一个质数,然后把20以内所有2的倍数划去.
-         2后面紧跟的数即为下一个质数3,然后把3所有的倍数划去.3后面紧跟的数即为下一个质数5,再把5所有的倍数划去.
-         */
-        if n < 3 {
-            return 0
-        }
-        var outs = [Int](repeating: 1, count: n)
-        print(outs)
-        outs[0] = 0
-        outs[1] = 0
-        for i in 2..<Int(sqrt(Double(n))) + 1 {
-            if outs[i] == 1 {
-                var index = i
-                var tmp = i * index
-                while tmp < n {
-                    outs[tmp] = 0
-                    index += 1
-                    tmp = index * i
-                }
-            }
-        }
-        let sum: Int = outs.reduce(0, +)
-        return sum
-    }
-    
-    // 206. 反转链表
-    func reverseList(_ head: ListNode?) -> ListNode? {
-        /*
-         反转一个单链表。
-         示例:
-         输入: 1->2->3->4->5->NULL
-         输出: 5->4->3->2->1->NULL
-         */
-        if head == nil || head?.next == nil {
-            return head
-        }
-        let node = reverseList(head?.next)
-        head?.next?.next = head
-        head?.next = nil
-        return node
-    }
-    
-    // 206. 反转链表
-    func reverseList1(_ head: ListNode?) -> ListNode? {
-        if head == nil || head?.next == nil {
-            return head
-        }
-        var tmpHead = head
-        var result: ListNode?
-        while tmpHead != nil {
-            let val = tmpHead?.val
-            let node = ListNode(val!)
-            node.next = result
-            result = node
-            tmpHead = tmpHead?.next
-        }
-        return result
-    }
-    
-    // 234. 回文链表
-    func isPalindrome(_ head: ListNode?) -> Bool {
-        /*
-         请判断一个链表是否为回文链表
-         */
-        var fast = head
-        var slow = head
-        var prev: ListNode?
-        // 找到中点
-        while fast != nil {
-            fast = fast?.next != nil ? fast!.next!.next : fast?.next
-            slow = slow?.next
-        }
-        // 反转后半部分
-        while slow != nil {
-            let tmp = slow?.next
-            slow?.next = prev
-            prev = slow
-            slow = tmp
-        }
-        // 比较
-        var tmpHead = head
-        while tmpHead != nil && prev != nil {
-            if tmpHead?.val != prev?.val {
-                return false
-            }
-            tmpHead = tmpHead?.next
-            prev = prev?.next
-        }
-        return true
-    }
-    
-    // 876. 链表的中间结点
-    func middleNode(_ head: ListNode?) -> ListNode? {
-        /*
-         给定一个带有头结点 head 的非空单链表，返回链表的中间结点。
-         如果有两个中间结点，则返回第二个中间结点。
-         */
-        var midle = head
-        var tmp = head
-        while tmp != nil {
-            if tmp?.next == nil {
-                break
-            }
-            midle = midle?.next
-            tmp = tmp?.next?.next
-        }
-        return midle
-    }
-}
-
-
-
-// MARK: - binary tree node
-extension DDBaseViewController {
-
-    /// Definition for a binary tree node.
-    public class TreeNode {
-        public var val: Int
-        public var left: TreeNode?
-        public var right: TreeNode?
-        public init(_ val: Int) {
-            self.val = val
-            self.left = nil
-            self.right = nil
-        }
-    }
-    
-    // 100. 相同的树
-    func isSameTree(_ p: TreeNode?, _ q: TreeNode?) -> Bool {
-        if p == nil && q == nil  {
-            return true
-        }
-        if p != nil && q != nil && p?.val == q?.val {
-            return isSameTree(p?.left, q?.left) && isSameTree(p?.right, q?.right)
-        }
-        return false;
-    }
-    
-    // 101. 对称的二叉树
-    func isSymmetric(_ root: TreeNode?) -> Bool {
-        /*
-         给定一个二叉树，检查它是否是镜像对称的。例如，二叉树 [1,2,2,3,4,4,3] 是对称的。
-         */
-        if root == nil {
-            return true
-        }
-        func isSymmeTree(_ left: TreeNode?, _ right: TreeNode?) -> Bool {
-            if left == nil && right == nil  {
-                return true
-            }
-            if left != nil && right != nil && left?.val == right?.val {
-                return isSymmeTree(left?.left, right?.right) && isSymmeTree(left?.right, right?.left)
-            }
-            return false
-        }
-        return isSymmeTree(root?.left, root?.right)
-    }
-    
-    // 104. 二叉树的最大深度
-    func maxDepth(_ root: TreeNode?) -> Int {
-        /*
-         给定一个二叉树，找出其最大深度。二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。
-         说明: 叶子节点是指没有子节点的节点。
-         */
-        /*
-        if root == nil {
-            return 0
-        }
-        func depth(_ left: TreeNode?, _ right: TreeNode?, _ dep: Int) -> Int {
-            if left != nil || right != nil {
-                let dep = dep + 1
-                return max(depth(left?.left, left?.right, dep), depth(right?.left, right?.right, dep))
-            }
-            return dep
-        }
-        return depth(root?.left, root?.right, 1)
-        */
-        return root == nil ? 0 : max(maxDepth(root?.left) + 1, maxDepth(root?.right) + 1)
-    }
-    
-    // 107. 二叉树的层次遍历 II
-    func levelOrderBottom(_ root: TreeNode?) -> [[Int]] {
-        /*
-         给定一个二叉树，返回其节点值自底向上的层次遍历。（即按从叶子节点所在层到根节点所在的层，逐层从左向右遍历）
-         */
-        if root == nil {
-            return []
-        }
-        var result: [[Int]] = []
-        var queue: [TreeNode] = []
-        queue.append(root!)
-        while !queue.isEmpty {
-            var count = queue.count
-            var tmp: [Int] = []
-            while count != 0 {
-                let node = queue.removeFirst()
-                tmp.append(node.val)
-                if node.left != nil {
-                    queue.append(node.left!)
-                }
-                if node.right != nil {
-                    queue.append(node.right!)
-                }
-                count -= 1
-            }
-            result.append(tmp)
-        }
-        return result.reversed()
-    }
-    
-    // 108. 将有序数组转换为二叉搜索树
-    func sortedArrayToBST(_ nums: [Int]) -> TreeNode? {
-        /*
-         将一个按照升序排列的有序数组，转换为一棵高度平衡二叉搜索树。
-         本题中，一个高度平衡二叉树是指一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过 1
-         */
-        return nil
-    }
-    
-    // 110. 平衡二叉树
-    func isBalanced(_ root: TreeNode?) -> Bool {
-        /*
-         给定一个二叉树，判断它是否是高度平衡的二叉树。
-         本题中，一棵高度平衡二叉树定义为：一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过1。
-         */
-        if root == nil {
-            return true
-        }
-        /*
-        let leftDepth: Int = maxDepth(root?.left)
-        let rightDepth: Int = maxDepth(root?.right)
-        let diff: Int = leftDepth - rightDepth
-        if diff > 1 || diff < -1 {
-            return false
-        }
-        return isBalanced(root?.left) && isBalanced(root?.right)
-        */
-        var depth: Int = 0
-        return isBalanceTreeOnce(root, &depth)
-    }
-    
-    func isBalanceTreeOnce(_ root: TreeNode?, _ depth: inout Int) -> Bool {
-        if root == nil {
-            depth = 0
-            return true
-        }
-        var leftDepth: Int = 0
-        var rightDepth: Int = 0
-        if isBalanceTreeOnce(root?.left, &leftDepth) && isBalanceTreeOnce(root?.right, &rightDepth) {
-            let diff: Int = leftDepth - rightDepth
-            if diff <= 1 && diff >= -1 {
-                depth = leftDepth > rightDepth ? leftDepth + 1 : rightDepth + 1
-                return true
-            }
-        }
-        return false
-    }
-    
-    
-    // 111. 二叉树的最小深度
-    func minDepth(_ root: TreeNode?) -> Int {
-        /*
-         给定一个二叉树，找出其最小深度。
-         最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
-         说明: 叶子节点是指没有子节点的节点。
-         */
-        if root == nil {
-            return 0
-        }
-        let minLeft = minDepth(root?.left)
-        let minRight = minDepth(root?.right)
-        if ((root?.left) != nil) && ((root?.right) != nil) {
-            return min(minLeft, minRight) + 1
-        }
-        return 1 + minLeft + minRight
-    }
-
-    // 112. 路径总和
-    func hasPathSum(_ root: TreeNode?, _ sum: Int) -> Bool {
-        /*
-         给定一个二叉树和一个目标和，判断该树中是否存在根节点到叶子节点的路径，这条路径上所有节点值相加等于目标和。
-         说明: 叶子节点是指没有子节点的节点。
-         示例: 给定如下二叉树，以及目标和 sum = 22，
-         */
-        if root == nil {
-            return false
-        }
-        if root?.left == nil && root?.right == nil && sum == root?.val {
-            return true
-        }
-        return hasPathSum(root?.left, sum - root!.val) || hasPathSum(root?.right, sum-root!.val)
-    }
-    
-    // 226. 翻转二叉树
-    func invertTree(_ root: TreeNode?) -> TreeNode? {
-        if root == nil {
-            return nil
-        }
-        let temp = invertTree(root?.left)
-        root?.left = invertTree(root?.right)
-        root?.right = temp
-        return root
-    }
-    
-    // 404. 左叶子之和
-    func sumOfLeftLeaves(_ root: TreeNode?) -> Int {
-        /*
-         计算给定二叉树的所有左叶子之和。
-         */
-        func sumOfLeaves(_ root: TreeNode?, _ left: Bool) -> Int {
-            if root == nil {
-                return 0
-            }
-            if root?.left == nil && root?.right == nil {
-                return left ? root!.val : 0
-            }
-            return sumOfLeaves(root?.left, true) + sumOfLeaves(root?.right, false)
-        }
-        
-        if root == nil {
-            return 0
-        }
-        return sumOfLeaves(root?.left, true) + sumOfLeaves(root?.right, false)
-    }
-    
-    
-    // 437. 路径总和 III
-    func pathSum(_ root: TreeNode?, _ sum: Int) -> Int {
-        /*
-         给定一个二叉树，它的每个结点都存放着一个整数值。找出路径和等于给定数值的路径总数。
-         路径不需要从根节点开始，也不需要在叶子节点结束，但是路径方向必须是向下的（只能从父节点到子节点）。
-         二叉树不超过1000个节点，且节点数值范围是 [-1000000,1000000] 的整数。
-         */
-        guard root != nil else {
-            return 0
-        }
-        func _dfs(_ res: inout Int, _ root: TreeNode?, _ s: Int) {
-            guard root != nil else {
-                return
-            }
-            var s = s
-            s += root?.val ?? 0
-            if s == sum {
-                res += 1
-            }
-            _dfs(&res, root?.left, s)
-            _dfs(&res, root?.right, s)
-        }
-        var res = 0
-        _dfs(&res, root, 0)
-        return pathSum(root?.left, sum) + pathSum(root?.right, sum) + res
-    }
-}
-
-
 // MARK: - Custom
 extension DDBaseViewController {
     
-    // 1. 两数之和
-    func twoSum(_ nums: [Int], _ target: Int) -> [Int] {
-        /*
-         给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。
-         你可以假设每种输入只会对应一个答案。但是，你不能重复利用这个数组中同样的元素。
-         */
-        let index = nums.count
-        for i in 0..<index {
-            for j in i+1..<index {
-                if nums[i] + nums[j] == target {
-                    return [i, j]
-                }
-            }
-        }
-        return [0]
-    }
     
     // 58. 最后一个单词的长度
     func lengthOfLastWord(_ s: String) -> Int {
@@ -2287,6 +1524,32 @@ extension DDBaseViewController {
         return k == 1
     }
     
+    func defangIPaddr(_ address: String) -> String {
+        var str = ""
+        for k in address {
+            var temp_k = String(k)
+            if temp_k == "." {
+                temp_k = "[.]"
+            }
+            str += temp_k
+        }
+        return str
+    }
+    
+    func corpFlightBookings(_ bookings: [[Int]], _ n: Int) -> [Int] {
+        var res: [Int] = Array(repeatElement(0, count: n))
+        for book in bookings {
+            let start: Int = book[0] - 1
+            let end: Int = book[1] - 1
+            let count: Int = book[2]
+            for i in start...end {
+                let v: Int = res[i]
+                res[i] = count + v
+            }
+        }
+        return res
+    }
+    
 //    func stoneGame(_ piles: [Int]) -> Bool {
 //        var lsum = 0
 //        var rsum = 0
@@ -2447,5 +1710,70 @@ extension DDBaseViewController {
     open func algorithmTest() {
 //        print(canCompleteCircuit1([1,2,3,4,5], [3,4,5,1,2]))
         print(checkValidString("(*()"))
+    }
+}
+
+
+class MyLinkedList {
+    public class ListNode {
+        public var val: Int
+        public var next: ListNode?
+        public var prev: ListNode?
+        public init(_ val: Int) {
+            self.val = val
+            self.next = nil
+            self.prev = nil
+        }
+    }
+    var head: ListNode?
+    var last: ListNode?
+    
+    /** Initialize your data structure here. */
+    init() {
+        head = ListNode(0)
+        last = head
+    }
+    
+    /** Get the value of the index-th node in the linked list. If the index is invalid, return -1. */
+    func get(_ index: Int) -> Int {
+        var i = index
+        var temp = head
+        while temp?.next != nil && i != 0 {
+            i -= 1
+            temp = temp?.next
+        }
+        if (temp != nil) && i == 0 {
+            return temp!.val
+        }
+        return -1
+    }
+    
+    /** Add a node of value val before the first element of the linked list. After the insertion, the new node will be the first node of the linked list. */
+    func addAtHead(_ val: Int) {
+        if head?.next != nil {
+            return
+        }
+        let node: ListNode = ListNode(val)
+        head?.next = node
+        node.prev = head
+        last = node
+    }
+    
+    /** Append a node of value val to the last element of the linked list. */
+    func addAtTail(_ val: Int) {
+        let node: ListNode = ListNode(val)
+        last?.next = node
+        node.prev = last
+        last = node
+    }
+    
+    /** Add a node of value val before the index-th node in the linked list. If index equals to the length of linked list, the node will be appended to the end of linked list. If index is greater than the length, the node will not be inserted. */
+    func addAtIndex(_ index: Int, _ val: Int) {
+        
+    }
+    
+    /** Delete the index-th node in the linked list, if the index is valid. */
+    func deleteAtIndex(_ index: Int) {
+        
     }
 }
