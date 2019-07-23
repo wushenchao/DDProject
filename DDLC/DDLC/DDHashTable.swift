@@ -124,7 +124,56 @@ class DDHashTable: NSObject {
         }
         return res
     }
-
+    
+    // 36. 有效的数独
+    #warning("fix")
+    func isValidSudoku(_ board: [[Character]]) -> Bool {
+        var rows: [Int: [Int: Int]] = [:]
+        var columns: [Int: [Int: Int]] = [:]
+        var boxes: [Int: [Int: Int]] = [:]
+        for i in 0..<9 {
+            for j in 0..<9 {
+                let num = board[i][j]
+                if num != "." {
+                    let number: Int = num.wholeNumberValue!
+                    let row_v: Int = rows[i]?[number] ?? 0
+                    rows[i] = [number: row_v + 1]
+                    let column_v = columns[j]?[number] ?? 0
+                    columns[j] = [number: column_v + 1]
+                    let box_index: Int = Int(i / 3) * 3 + Int(j / 3)
+                    let box_v = boxes[box_index]?[number] ?? 0
+                    boxes[box_index] = [number: box_v + 1]
+                    if rows[i]![number]! > 1 || columns[j]![number]! > 1 || boxes[box_index]![number]! > 1 {
+                        return false
+                    }
+                }
+            }
+        }
+        return true
+    }
+    
+    // 49. 字母异位词分组
+    func groupAnagrams(_ strs: [String]) -> [[String]] {
+        /*
+         给定一个字符串数组，将字母异位词组合在一起。字母异位词指字母相同，但排列不同的字符串。
+         */
+        var res: [String: [String]] = [:]
+        for str in strs {
+            var chars: [String] = []
+            for char in str {
+                chars.append(String(char))
+            }
+            let key = chars.sorted().joined(separator: "")
+            var vals: [String] = res[key] ?? []
+            vals.append(str)
+            res[key] = vals
+        }
+        var datas: [[String]] = []
+        for val in res.values {
+            datas.append(val)
+        }
+        return datas
+    }
     
     // 136. 只出现一次的数字
     func singleNumber(_ nums: [Int]) -> Int {
