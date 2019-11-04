@@ -13,6 +13,7 @@
 		7C08041D222AAC4F0082554C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7C08041B222AAC4F0082554C /* LaunchScreen.storyboard */; };
 		7C080428222AAC500082554C /* DDLCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C080427222AAC500082554C /* DDLCTests.swift */; };
 		7C080433222AAC500082554C /* DDLCUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C080432222AAC500082554C /* DDLCUITests.swift */; };
+		7C20C073237045B20063219B /* DDStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C20C072237045B20063219B /* DDStack.swift */; };
 		7C310D1422485E0300F0ED6F /* DDTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C310D1322485E0300F0ED6F /* DDTabBarController.swift */; };
 		7C310D1722485FFF00F0ED6F /* DDColorHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C310D1622485FFF00F0ED6F /* DDColorHex.swift */; };
 		7C310D192248628000F0ED6F /* DDHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C310D182248628000F0ED6F /* DDHomeViewController.swift */; };
@@ -53,6 +54,7 @@
 		7C08042E222AAC500082554C /* DDLCUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DDLCUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C080432222AAC500082554C /* DDLCUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDLCUITests.swift; sourceTree = "<group>"; };
 		7C080434222AAC500082554C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7C20C072237045B20063219B /* DDStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDStack.swift; sourceTree = "<group>"; };
 		7C310D1322485E0300F0ED6F /* DDTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDTabBarController.swift; sourceTree = "<group>"; };
 		7C310D1622485FFF00F0ED6F /* DDColorHex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDColorHex.swift; sourceTree = "<group>"; };
 		7C310D182248628000F0ED6F /* DDHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDHomeViewController.swift; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 				7C080412222AAC4D0082554C /* AppDelegate.swift */,
 				7C080414222AAC4D0082554C /* ViewController.swift */,
 				7C3FBA872234DC6D002EC0D1 /* DDBaseViewController.swift */,
+				7C20C072237045B20063219B /* DDStack.swift */,
 				7CF6661222E30C6A0073EA3F /* DDLinkTable.swift */,
 				7CF6661422E30CD10073EA3F /* DDTreeNode.swift */,
 				7CF6661622E30D670073EA3F /* DDHashTable.swift */,
@@ -287,6 +290,7 @@
 				7CF6661522E30CD10073EA3F /* DDTreeNode.swift in Sources */,
 				7C080415222AAC4D0082554C /* ViewController.swift in Sources */,
 				7C310D1B2248629000F0ED6F /* DDMeViewController.swift in Sources */,
+				7C20C073237045B20063219B /* DDStack.swift in Sources */,
 				7CF6661322E30C6B0073EA3F /* DDLinkTable.swift in Sources */,
 				7CF6661722E30D670073EA3F /* DDHashTable.swift in Sources */,
 				7C310D192248628000F0ED6F /* DDHomeViewController.swift in Sources */,

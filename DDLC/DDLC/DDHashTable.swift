@@ -187,4 +187,17 @@ class DDHashTable: NSObject {
         }
         return result
     }
+    
+    // 166. 分数到小数
+    func fractionToDecimal(_ numerator: Int, _ denominator: Int) -> String {
+        if numerator == 0 {
+            return "0"
+        }
+        var res = ""
+        if (numerator < 0 && denominator > 0) ||
+            (numerator > 0 && denominator < 0) {
+            res += "-"
+        }
+        return ""
+    }
 }
