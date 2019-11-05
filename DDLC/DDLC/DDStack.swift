@@ -11,7 +11,7 @@ import UIKit
 class DDStack: NSObject {
     // 20. 有效等括号
     func isValid(_ s: String) -> Bool {
-        /*
+        /**
          给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串，判断字符串是否有效。
          有效字符串需满足：左括号必须用相同类型的右括号闭合。左括号必须以正确的顺序闭合。注意空字符串可被认为是有效字符串。
          */
@@ -82,7 +82,7 @@ class DDStack: NSObject {
     
     // 496. 下一个更大元素 I
     func nextGreaterElement(_ nums1: [Int], _ nums2: [Int]) -> [Int] {
-        /*
+        /**
          给定两个没有重复元素的数组 nums1 和 nums2 ，其中nums1 是 nums2 的子集。找到 nums1 中每个元素在 nums2 中的下一个比其大的值。
          nums1 中数字 x 的下一个更大元素是指 x 在 nums2 中对应位置的右边的第一个比 x 大的元素。如果不存在，对应位置输出-1。
          */
@@ -111,7 +111,7 @@ class DDStack: NSObject {
     }
     
     func nextGreaterElement1(_ nums1: [Int], _ nums2: [Int]) -> [Int] {
-        /*
+        /**
          给定两个没有重复元素的数组 nums1 和 nums2 ，其中nums1 是 nums2 的子集。找到 nums1 中每个元素在 nums2 中的下一个比其大的值。
          nums1 中数字 x 的下一个更大元素是指 x 在 nums2 中对应位置的右边的第一个比 x 大的元素。如果不存在，对应位置输出-1。
          */
@@ -124,5 +124,41 @@ class DDStack: NSObject {
             stack.append(num)
         }
         return nums1.map{dict[$0] ?? -1}
+    }
+    
+    // 682. 棒球比赛
+    func calPoints(_ ops: [String]) -> Int {
+        /**
+         给定一个字符串列表，每个字符串可以是以下四种类型之一：
+         1.整数（一轮的得分）：直接表示您在本轮中获得的积分数。
+         2. "+"（一轮的得分）：表示本轮获得的得分是前两轮 有效 回合得分的总和。
+         3. "D"（一轮的得分）：表示本轮获得的得分是前一轮 有效 回合得分的两倍。
+         4. "C"（一个操作，这不是一个回合的分数）：表示您获得的最后一个 有效 回合的分数是无效的，应该被移除。
+         每一轮的操作都是永久性的，可能会对前一轮和后一轮产生影响。
+         你需要返回你在所有回合中得分的总和
+         */
+        var res = 0
+        var stack: [Int] = []
+        for n in ops {
+            if n == "+" {
+                var tmp = stack
+                let v = tmp.popLast()! + tmp.popLast()!
+                stack.append(v)
+                res += v
+            }
+            else if n == "D" {
+                let v = stack.last! * 2
+                stack.append(v)
+                res += v
+            }
+            else if n == "C" {
+                res -= stack.popLast()!
+            }
+            else {
+                res += Int(n)!
+                stack.append(Int(n)!)
+            }
+        }
+        return res
     }
 }
