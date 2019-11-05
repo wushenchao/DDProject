@@ -161,4 +161,112 @@ class DDStack: NSObject {
         }
         return res
     }
+    
+    // 844. 比较含退格的字符串
+    func backspaceCompare(_ S: String, _ T: String) -> Bool {
+        /**
+         给定 S 和 T 两个字符串，当它们分别被输入到空白的文本编辑器后，判断二者是否相等，并返回结果。 # 代表退格字符。
+         示例 1：
+         输入：S = "ab#c", T = "ad#c"
+         输出：true
+         解释：S 和 T 都会变成 “ac”。
+         */
+        var sStack: [Character] = []
+        var tStack: [Character] = []
+        for s in S {
+            if s == "#" {
+                let _ = sStack.popLast()
+            }
+            else {
+                sStack.append(s)
+            }
+        }
+        for t in T {
+            if t == "#" {
+                let _ = tStack.popLast()
+            }
+            else {
+                tStack.append(t)
+            }
+        }
+        return sStack == tStack
+    }
+    
+//    func backspaceCompare1(_ S: String, _ T: String) -> Bool {
+//        /**
+//         给定 S 和 T 两个字符串，当它们分别被输入到空白的文本编辑器后，判断二者是否相等，并返回结果。 # 代表退格字符。
+//         */
+//        var sStack: [Character] = Array(S)
+//        var tStack: [Character] = Array(T)
+//        var s_c = sStack.count - 1
+//        var t_c = tStack.count - 1
+//        while s_c >= 0 || t_c >= 0 {
+//            let s = sStack[s_c]
+//            let t = tStack[t_c]
+//            if s != "#" && t != "#" {
+//                if s == t {
+//                    s_c -= 1
+//                    t_c -= 1
+//                }
+//            }
+//        }
+//
+//        return sStack == tStack
+//    }
+    
+    // 1021. 删除最外层的括号
+    func removeOuterParentheses(_ S: String) -> String {
+        /**
+         有效括号字符串为空 ("")、"(" + A + ")" 或 A + B，其中 A 和 B 都是有效的括号字符串，+ 代表字符串的连接。例如，""，"()"，"(())()" 和 "(()(()))" 都是有效的括号字符串。
+         如果有效字符串 S 非空，且不存在将其拆分为 S = A+B 的方法，我们称其为原语（primitive），其中 A 和 B 都是非空有效括号字符串。
+         给出一个非空有效字符串 S，考虑将其进行原语化分解，使得：S = P_1 + P_2 + ... + P_k，其中 P_i 是有效括号字符串原语。
+         对 S 进行原语化分解，删除分解中每个原语字符串的最外层括号，返回 S 。
+         */
+        var stack: [Character] = []
+        var num = 0
+        var res = ""
+        for s in S {
+            if s == "(" {
+                num += 1
+            }
+            else {
+                num -= 1
+            }
+            if num == 0 {
+                var tmp = ""
+                while stack.count > 1 {
+                    let v = stack.popLast()!
+                    tmp = "\(v)\(tmp)"
+                }
+                let _ = stack.popLast()
+                res = "\(res)\(tmp)"
+            }
+            else {
+                stack.append(s)
+            }
+        }
+        return res
+    }
+    
+    func removeOuterParentheses1(_ S: String) -> String {
+        /**
+         */
+        var num = 0
+        var res = ""
+        for s in S {
+            if s == "(" {
+                if num > 0 {
+                    res.append(s)
+                }
+                num += 1
+            }
+            else {
+                num -= 1
+                if num > 0 {
+                    res.append(s)
+                }
+            }
+        }
+        return res
+    }
 }
