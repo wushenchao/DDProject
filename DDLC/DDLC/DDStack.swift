@@ -325,4 +325,44 @@ extension DDStack {
         }
         return res.count > 0 ? res : "/"
     }
+    
+    // 94. 二叉树的中序遍历
+    func inorderTraversal(_ root: TreeNode?) -> [Int] {
+        /**
+         栈的方法
+         */
+        var head = root
+        var stack: [TreeNode] = []
+        var res: [Int] = []
+        while head != nil || stack.count > 0 {
+            while head != nil {
+                stack.append(head!)
+                head = head?.left
+            }
+            head = stack.popLast()
+            res.append(head!.val)
+            head = head?.right
+        }
+        return res
+    }
+    
+    func inorderTraversal1(_ root: TreeNode?) -> [Int] {
+        /**
+         循环遍历
+         */
+        var res: [Int] = []
+        func helper(_ root: TreeNode?,_ res: inout [Int]) {
+            if root != nil {
+                if root?.left != nil {
+                    helper(root?.left, &res)
+                }
+                res.append(root!.val)
+                if root?.right != nil {
+                    helper(root?.right, &res)
+                }
+            }
+        }
+        helper(root, &res)
+        return res
+    }
 }
