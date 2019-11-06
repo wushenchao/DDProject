@@ -365,4 +365,45 @@ extension DDStack {
         helper(root, &res)
         return res
     }
+    
+    // 103. 二叉树的锯齿形层次遍历
+    func zigzagLevelOrder(_ root: TreeNode?) -> [[Int]] {
+        /**
+         给定一个二叉树，返回其节点值的锯齿形层次遍历。（即先从左往右，再从右往左进行下一层遍历，以此类推，层与层之间交替进行）。
+         */
+        var res: [[Int]] = []
+        var stack: [TreeNode] = []
+        if root != nil {
+            stack.append(root!)
+        }
+        var left = false
+        while stack.count > 0 {
+            var tmpStack: [TreeNode] = []
+            var tmpRes: [Int] = []
+            while stack.count > 0 {
+                let tree = stack.popLast()
+                tmpRes.append(tree!.val)
+                if left == true {// right first
+                    if let rTree = tree?.right {
+                        tmpStack.append(rTree)
+                    }
+                    if let lTree = tree?.left {
+                        tmpStack.append(lTree)
+                    }
+                }
+                else { // left first
+                    if let lTree = tree?.left {
+                        tmpStack.append(lTree)
+                    }
+                    if let rTree = tree?.right {
+                        tmpStack.append(rTree)
+                    }
+                }
+            }
+            res.append(tmpRes)
+            stack = tmpStack
+            left = !left
+        }
+        return res
+    }
 }
