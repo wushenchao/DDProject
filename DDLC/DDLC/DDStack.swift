@@ -406,4 +406,25 @@ extension DDStack {
         }
         return res
     }
+    
+    // 144. 二叉树的前序遍历
+    func preorderTraversal(_ root: TreeNode?) -> [Int] {
+        /**
+         给定一个二叉树，返回它的 前序 遍历.
+         */
+        var res: [Int] = []
+        func helper(_ root: TreeNode?,_ res: inout [Int]) {
+            if root != nil {
+                res.append(root!.val)
+                if root?.left != nil {
+                    helper(root?.left, &res)
+                }
+                if root?.right != nil {
+                    helper(root?.right, &res)
+                }
+            }
+        }
+        helper(root, &res)
+        return res
+    }
 }
