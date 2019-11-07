@@ -506,4 +506,87 @@ extension DDStack {
         }
         return stack.count == 0
     }
+    
+    // 394. 字符串解码
+    func decodeString(_ s: String) -> String {
+        /**
+         给定一个经过编码的字符串，返回它解码后的字符串。
+         编码规则为: k[encoded_string]，表示其中方括号内部的 encoded_string 正好重复 k 次。注意 k 保证为正整数。
+         你可以认为输入字符串总是有效的；输入字符串中没有额外的空格，且输入的方括号总是符合格式要求的。
+         此外，你可以认为原始数据不包含数字，所有的数字只表示重复的次数 k ，例如不会出现像 3a 或 2[4] 的输入。
+         示例:
+         s = "3[a]2[bc]", 返回 "aaabcbc".
+         s = "3[a2[c]]", 返回 "accaccacc".
+         s = "2[abc]3[cd]ef", 返回 "abcabccdcdcdef".
+         */
+        var stacks: [String] = []
+        var res = ""
+        for str in s {
+            if str == "]" {
+                // get repet string
+                var repeat_str: String = ""
+                while stacks.count > 0 && stacks.last! != "[" {
+                    repeat_str = "\(stacks.popLast()!)\(repeat_str)"
+                }
+                // pop [
+                let _ = stacks.popLast()
+                // get repet count
+                var repet_count = 0
+                var flag = true
+                var multiple = 1
+                while flag && stacks.count > 0 {
+                    let v = stacks.popLast()!
+                    flag = Character(v).isWholeNumber
+                    if flag {
+                        repet_count = repet_count + Int(v)! * multiple
+                        multiple *= 10
+                    }
+                    else {
+                        stacks.append(v)
+                    }
+                }
+                let repeat_res: String = repet_count * repeat_str
+                if stacks.count > 0 {
+                    stacks.append(repeat_res)
+                }
+                else {
+                    res = res + repeat_res
+                }
+            }
+            else {
+                stacks.append(String(str))
+            }
+        }
+        return res + stacks.joined()
+    }
+    
+    func decodeString1(_ s: String) -> String {
+        var stacks: [(Int, String)] = []
+        var res = ""
+        var multi = 0
+        for c in s {
+            if let n = c.wholeNumberValue {
+                multi = multi * 10 + n
+            }
+            else if c == "[" {
+                stacks.append((multi, res))
+                res = ""
+                multi = 0
+            }
+            else if c == "]" {
+                let v = stacks.popLast()!
+                res = v.1 + v.0 * res
+            }
+            else {
+                res.append(c)
+            }
+        }
+        return res
+    }
+}
+
+extension String {
+    static func * (lhs: Int, rhs: String) -> String {
+        return (0..<lhs).reduce("") { (res, index) -> String in res + rhs }
+    }
 }
