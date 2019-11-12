@@ -598,10 +598,12 @@ extension DDStack {
         var kk = k
         for c in num {
             let v: Int = Int(String(c))!
+            // 剩余移除数 > 0 当前数 < 缓存中的d最后一个数
             while kk > 0 && stacks.count > 0 && v < Int(String(stacks.last!))! {
                 let _ = stacks.popLast()
                 kk -= 1
             }
+            // 前导向为 0 不计入
             if stacks.count == 0 && v == 0 {
                 continue
             }

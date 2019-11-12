@@ -19,6 +19,7 @@
 		7C310D192248628000F0ED6F /* DDHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C310D182248628000F0ED6F /* DDHomeViewController.swift */; };
 		7C310D1B2248629000F0ED6F /* DDMeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C310D1A2248629000F0ED6F /* DDMeViewController.swift */; };
 		7C3FBA882234DC6D002EC0D1 /* DDBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C3FBA872234DC6D002EC0D1 /* DDBaseViewController.swift */; };
+		7C6050B123740310002190B9 /* DDHeap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6050B023740310002190B9 /* DDHeap.swift */; };
 		7CF6661322E30C6B0073EA3F /* DDLinkTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF6661222E30C6A0073EA3F /* DDLinkTable.swift */; };
 		7CF6661522E30CD10073EA3F /* DDTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF6661422E30CD10073EA3F /* DDTreeNode.swift */; };
 		7CF6661722E30D670073EA3F /* DDHashTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF6661622E30D670073EA3F /* DDHashTable.swift */; };
@@ -60,6 +61,7 @@
 		7C310D182248628000F0ED6F /* DDHomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDHomeViewController.swift; sourceTree = "<group>"; };
 		7C310D1A2248629000F0ED6F /* DDMeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDMeViewController.swift; sourceTree = "<group>"; };
 		7C3FBA872234DC6D002EC0D1 /* DDBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDBaseViewController.swift; sourceTree = "<group>"; };
+		7C6050B023740310002190B9 /* DDHeap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDHeap.swift; sourceTree = "<group>"; };
 		7CF6661222E30C6A0073EA3F /* DDLinkTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDLinkTable.swift; sourceTree = "<group>"; };
 		7CF6661422E30CD10073EA3F /* DDTreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDTreeNode.swift; sourceTree = "<group>"; };
 		7CF6661622E30D670073EA3F /* DDHashTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DDHashTable.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				7C080414222AAC4D0082554C /* ViewController.swift */,
 				7C3FBA872234DC6D002EC0D1 /* DDBaseViewController.swift */,
 				7C20C072237045B20063219B /* DDStack.swift */,
+				7C6050B023740310002190B9 /* DDHeap.swift */,
 				7CF6661222E30C6A0073EA3F /* DDLinkTable.swift */,
 				7CF6661422E30CD10073EA3F /* DDTreeNode.swift */,
 				7CF6661622E30D670073EA3F /* DDHashTable.swift */,
@@ -292,6 +295,7 @@
 				7C310D1B2248629000F0ED6F /* DDMeViewController.swift in Sources */,
 				7C20C073237045B20063219B /* DDStack.swift in Sources */,
 				7CF6661322E30C6B0073EA3F /* DDLinkTable.swift in Sources */,
+				7C6050B123740310002190B9 /* DDHeap.swift in Sources */,
 				7CF6661722E30D670073EA3F /* DDHashTable.swift in Sources */,
 				7C310D192248628000F0ED6F /* DDHomeViewController.swift in Sources */,
 				7C3FBA882234DC6D002EC0D1 /* DDBaseViewController.swift in Sources */,

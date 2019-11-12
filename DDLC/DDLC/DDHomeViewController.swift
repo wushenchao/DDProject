@@ -14,7 +14,13 @@ class DDHomeViewController: DDBaseViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        self.algorithmTest()
+//        self.algorithmTest()
+        let heap = DDHeap()
+        var items = [1, 2, 4, 6, 3, 5]
+        heap.heapSorts(&items)
+        print(items)
+        heap.heapSort(&items)
+        print(items)
     }
     
 
