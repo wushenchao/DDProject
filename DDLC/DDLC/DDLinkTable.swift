@@ -17,7 +17,229 @@ class ListNode {
     }
 }
 
+/// MARK - Simple
 class DDLinkTable: NSObject {
+    // 21. 合并两个有序链表
+    func mergeTwoLists(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
+        /*
+         将两个有序链表合并为一个新的有序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。
+         */
+        let head :ListNode? = ListNode(0)
+        var pre = head
+        var l1 = l1
+        var l2 = l2
+        while l1 != nil && l2 != nil {
+            if l1!.val <= l2!.val {
+                pre?.next = l1
+                l1 = l1?.next
+            }
+            else {
+                pre?.next = l2
+                l2 = l2?.next
+            }
+            pre = pre?.next
+        }
+        pre?.next = l1 == nil ? l2 : l1
+        return head?.next
+    }
+    
+    func mergeTwoLists2(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
+        /*
+         将两个有序链表合并为一个新的有序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。
+         */
+        if l1 == nil {
+            return l2
+        } else if l2 == nil {
+            return l1
+        } else {
+            if l1!.val < l2!.val {
+                l1?.next = mergeTwoLists(l1?.next, l2)
+                return l1
+            } else {
+                l2?.next = mergeTwoLists(l1, l2?.next)
+                return l2
+            }
+        }
+    }
+    
+    // 83. 删除排序链表中的重复元素
+    func deleteDuplicates(_ head: ListNode?) -> ListNode? {
+        /*
+         给定一个排序链表，删除所有重复的元素，使得每个元素只出现一次。
+         输入: 1->2->3->3->4->4->5
+         输出: 1->2->3->4->5
+         */
+        var current = head
+        while (current != nil) && ((current?.next) != nil) {
+            if current?.val == current?.next?.val {
+                current?.next = current?.next?.next
+            }
+            else {
+                current = current?.next
+            }
+        }
+        return head
+    }
+    
+    // 82. 删除排序链表中的重复元素 II
+    func deleteDuplicates2(_ head: ListNode?) -> ListNode? {
+        /*
+         给定一个排序链表，删除所有含有重复数字的节点，只保留原始链表中 没有重复出现 的数字。
+         输入: 1->2->3->3->4->4->5
+         输出: 1->2->5
+         */
+        let pre: ListNode? = ListNode(0)
+        pre?.next = head
+        var del = false
+        var pre_node = pre
+        var cur_node = pre?.next
+        while cur_node != nil && cur_node?.next != nil {
+            if cur_node?.val == cur_node?.next?.val {
+                del = true
+                cur_node?.next = cur_node?.next?.next
+            }
+            else {
+                if del == true {
+                    del = false
+                    pre_node?.next = cur_node?.next
+                    cur_node = pre_node?.next
+                }
+                else {
+                    cur_node = cur_node?.next
+                    pre_node = pre_node?.next
+                }
+            }
+        }
+        if del == true {
+            pre_node?.next = cur_node?.next
+        }
+        return pre?.next
+    }
+    
+    // 141. 环形链表
+    func hasCycle(_ root: ListNode?, _ index: Int) -> Bool {
+        /*
+         给定一个链表，判断链表中是否有环。
+         为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是 -1，则在该链表中没有环。
+         */
+        if root == nil || root?.next == nil {
+            return false
+        }
+        var slow: ListNode? = root
+        var fast: ListNode? = root?.next
+        while slow?.val != fast?.val {
+            if fast == nil || fast?.next == nil {
+                return false
+            }
+            slow = slow?.next
+            fast = fast?.next?.next
+        }
+        return false
+    }
+    
+    // 203. 移除链表元素
+    func removeElements(_ head: ListNode?, _ val: Int) -> ListNode? {
+        /*
+         删除链表中等于给定值 val 的所有节点。
+         示例:
+         输入: 1->2->6->3->4->5->6, val = 6
+         输出: 1->2->3->4->5
+         */
+        if head == nil {
+            return nil
+        }
+        head?.next = removeElements(head?.next, val)
+        return head?.val == val ? head?.next : head
+    }
+    
+    
+    // 206. 反转链表
+    func reverseList(_ head: ListNode?) -> ListNode? {
+        /*
+         反转一个单链表。
+         示例:
+         输入: 1->2->3->4->5->NULL
+         输出: 5->4->3->2->1->NULL
+         */
+        if head == nil || head?.next == nil {
+            return head
+        }
+        let node = reverseList(head?.next)
+        head?.next?.next = head
+        head?.next = nil
+        return node
+    }
+    
+    func reverseList1(_ head: ListNode?) -> ListNode? {
+        if head == nil || head?.next == nil {
+            return head
+        }
+        var curr = head
+        var prev: ListNode?
+        while curr != nil {
+            let next = curr?.next
+            curr?.next = prev
+            prev = curr
+            curr = next
+        }
+        return prev
+    }
+    
+    // 234. 回文链表
+    func isPalindrome(_ head: ListNode?) -> Bool {
+        /*
+         请判断一个链表是否为回文链表
+         */
+        var fast = head
+        var slow = head
+        var prev: ListNode?
+        // 找到中点
+        while fast != nil {
+            fast = fast?.next != nil ? fast!.next!.next : fast?.next
+            slow = slow?.next
+        }
+        // 反转后半部分
+        while slow != nil {
+            let tmp = slow?.next
+            slow?.next = prev
+            prev = slow
+            slow = tmp
+        }
+        // 比较
+        var tmpHead = head
+        while tmpHead != nil && prev != nil {
+            if tmpHead?.val != prev?.val {
+                return false
+            }
+            tmpHead = tmpHead?.next
+            prev = prev?.next
+        }
+        return true
+    }
+    
+    
+    // 876. 链表的中间结点
+    func middleNode(_ head: ListNode?) -> ListNode? {
+        /*
+         给定一个带有头结点 head 的非空单链表，返回链表的中间结点。
+         如果有两个中间结点，则返回第二个中间结点。
+         */
+        var midle = head
+        var tmp = head
+        while tmp != nil {
+            if tmp?.next == nil {
+                break
+            }
+            midle = midle?.next
+            tmp = tmp?.next?.next
+        }
+        return midle
+    }
+}
+
+
+extension DDLinkTable {
+    
     // 2. 两数相加
     func addTwoNumbers(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
         /*
@@ -69,48 +291,7 @@ class DDLinkTable: NSObject {
         return pre?.next
     }
     
-    // 21. 合并两个有序链表
-    func mergeTwoLists(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
-        /*
-         将两个有序链表合并为一个新的有序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。
-         */
-        let head :ListNode? = ListNode(0)
-        var pre = head
-        var l1 = l1
-        var l2 = l2
-        while l1 != nil && l2 != nil {
-            if l1!.val <= l2!.val {
-                pre?.next = l1
-                l1 = l1?.next
-            }
-            else {
-                pre?.next = l2
-                l2 = l2?.next
-            }
-            pre = pre?.next
-        }
-        pre?.next = l1 == nil ? l2 : l1
-        return head?.next
-    }
-    
-    func mergeTwoLists2(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
-        /*
-         将两个有序链表合并为一个新的有序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。
-         */
-        if l1 == nil {
-            return l2
-        } else if l2 == nil {
-            return l1
-        } else {
-            if l1!.val < l2!.val {
-                l1?.next = mergeTwoLists(l1?.next, l2)
-                return l1
-            } else {
-                l2?.next = mergeTwoLists(l1, l2?.next)
-                return l2
-            }
-        }
-    }
+
     
     // 24. 两两交换链表中的节点
     func swapPairs(_ head: ListNode?) -> ListNode? {
@@ -164,59 +345,6 @@ class DDLinkTable: NSObject {
         return newHead
     }
     
-    // 82. 删除排序链表中的重复元素
-    func deleteDuplicates2(_ head: ListNode?) -> ListNode? {
-        /*
-         给定一个排序链表，删除所有含有重复数字的节点，只保留原始链表中 没有重复出现 的数字。
-         输入: 1->2->3->3->4->4->5
-         输出: 1->2->5
-         */
-        let pre: ListNode? = ListNode(0)
-        pre?.next = head
-        var del = false
-        var pre_node = pre
-        var cur_node = pre?.next
-        while cur_node != nil && cur_node?.next != nil {
-            if cur_node?.val == cur_node?.next?.val {
-                del = true
-                cur_node?.next = cur_node?.next?.next
-            }
-            else {
-                if del == true {
-                    del = false
-                    pre_node?.next = cur_node?.next
-                    cur_node = pre_node?.next
-                }
-                else {
-                    cur_node = cur_node?.next
-                    pre_node = pre_node?.next
-                }
-            }
-        }
-        if del == true {
-            pre_node?.next = cur_node?.next
-        }
-        return pre?.next
-    }
-    
-    // 83. 删除排序链表中的重复元素
-    func deleteDuplicates(_ head: ListNode?) -> ListNode? {
-        /*
-         给定一个排序链表，删除所有重复的元素，使得每个元素只出现一次。
-         输入: 1->2->3->3->4->4->5
-         输出: 1->2->3->4->5
-         */
-        var current = head
-        while (current != nil) && ((current?.next) != nil) {
-            if current?.val == current?.next?.val {
-                current?.next = current?.next?.next
-            }
-            else {
-                current = current?.next
-            }
-        }
-        return head
-    }
     
     // 86. 分隔链表
     func partition(_ head: ListNode?, _ x: Int) -> ListNode? {
@@ -272,27 +400,6 @@ class DDLinkTable: NSObject {
             pre = pre?.next
         }
         return pre?.next
-    }
-    
-    // 141. 环形链表
-    func hasCycle(_ root: ListNode?, _ index: Int) -> Bool {
-        /*
-         给定一个链表，判断链表中是否有环。
-         为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是 -1，则在该链表中没有环。
-         */
-        if root == nil || root?.next == nil {
-            return false
-        }
-        var slow: ListNode? = root
-        var fast: ListNode? = root?.next
-        while slow?.val != fast?.val {
-            if fast == nil || fast?.next == nil {
-                return false
-            }
-            slow = slow?.next
-            fast = fast?.next?.next
-        }
-        return false
     }
     
     // 155. 最小栈
@@ -389,132 +496,6 @@ class DDLinkTable: NSObject {
         }
     }
     
-    // 160. 相交链表
-    func crossLinked(_ headOne: ListNode?, _ headTwo: ListNode?) -> Bool {
-        /*
-         编写一个程序，找到两个单链表相交的起始节点。
-         如果两个链表没有交点，返回 null.
-         在返回结果后，两个链表仍须保持原有的结构。
-         可假定整个链表结构中没有循环。
-         程序尽量满足 O(n) 时间复杂度，且仅用 O(1) 内存。
-         */
-        
-        return false
-    }
-    
-    // 203. 移除链表元素
-    func removeElements(_ head: ListNode?, _ val: Int) -> ListNode? {
-        /*
-         删除链表中等于给定值 val 的所有节点。
-         示例:
-         输入: 1->2->6->3->4->5->6, val = 6
-         输出: 1->2->3->4->5
-         */
-        if head == nil {
-            return nil
-        }
-        head?.next = removeElements(head?.next, val)
-        return head?.val == val ? head?.next : head
-    }
-    
-    // 204. 计数质数
-    func countPrimes(_ n: Int) -> Int {
-        /*
-         统计所有小于非负整数 n 的质数的数量。
-         示例: 输入: 10 输出: 4
-         解释: 小于 10 的质数一共有 4 个, 它们是 2, 3, 5, 7 。
-         厄拉多塞筛法:
-         比如说求20以内质数的个数,首先0,1不是质数.2是第一个质数,然后把20以内所有2的倍数划去.
-         2后面紧跟的数即为下一个质数3,然后把3所有的倍数划去.3后面紧跟的数即为下一个质数5,再把5所有的倍数划去.
-         */
-        if n < 3 {
-            return 0
-        }
-        var outs = [Int](repeating: 1, count: n)
-        print(outs)
-        outs[0] = 0
-        outs[1] = 0
-        for i in 2..<Int(sqrt(Double(n))) + 1 {
-            if outs[i] == 1 {
-                var index = i
-                var tmp = i * index
-                while tmp < n {
-                    outs[tmp] = 0
-                    index += 1
-                    tmp = index * i
-                }
-            }
-        }
-        let sum: Int = outs.reduce(0, +)
-        return sum
-    }
-    
-    // 206. 反转链表
-    func reverseList(_ head: ListNode?) -> ListNode? {
-        /*
-         反转一个单链表。
-         示例:
-         输入: 1->2->3->4->5->NULL
-         输出: 5->4->3->2->1->NULL
-         */
-        if head == nil || head?.next == nil {
-            return head
-        }
-        let node = reverseList(head?.next)
-        head?.next?.next = head
-        head?.next = nil
-        return node
-    }
-    
-    // 206. 反转链表
-    func reverseList1(_ head: ListNode?) -> ListNode? {
-        if head == nil || head?.next == nil {
-            return head
-        }
-        var tmpHead = head
-        var result: ListNode?
-        while tmpHead != nil {
-            let val = tmpHead?.val
-            let node = ListNode(val!)
-            node.next = result
-            result = node
-            tmpHead = tmpHead?.next
-        }
-        return result
-    }
-    
-    // 234. 回文链表
-    func isPalindrome(_ head: ListNode?) -> Bool {
-        /*
-         请判断一个链表是否为回文链表
-         */
-        var fast = head
-        var slow = head
-        var prev: ListNode?
-        // 找到中点
-        while fast != nil {
-            fast = fast?.next != nil ? fast!.next!.next : fast?.next
-            slow = slow?.next
-        }
-        // 反转后半部分
-        while slow != nil {
-            let tmp = slow?.next
-            slow?.next = prev
-            prev = slow
-            slow = tmp
-        }
-        // 比较
-        var tmpHead = head
-        while tmpHead != nil && prev != nil {
-            if tmpHead?.val != prev?.val {
-                return false
-            }
-            tmpHead = tmpHead?.next
-            prev = prev?.next
-        }
-        return true
-    }
-    
     // 328. 奇偶链表
     func oddEvenList(_ head: ListNode?) -> ListNode? {
         if head == nil || head?.next == nil {
@@ -562,21 +543,4 @@ class DDLinkTable: NSObject {
         return pre?.next
     }
     
-    // 876. 链表的中间结点
-    func middleNode(_ head: ListNode?) -> ListNode? {
-        /*
-         给定一个带有头结点 head 的非空单链表，返回链表的中间结点。
-         如果有两个中间结点，则返回第二个中间结点。
-         */
-        var midle = head
-        var tmp = head
-        while tmp != nil {
-            if tmp?.next == nil {
-                break
-            }
-            midle = midle?.next
-            tmp = tmp?.next?.next
-        }
-        return midle
-    }
 }

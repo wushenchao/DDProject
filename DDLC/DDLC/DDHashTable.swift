@@ -200,4 +200,36 @@ class DDHashTable: NSObject {
         }
         return ""
     }
+    
+    // 204. 计数质数
+    func countPrimes(_ n: Int) -> Int {
+        /*
+         统计所有小于非负整数 n 的质数的数量。
+         示例: 输入: 10 输出: 4
+         解释: 小于 10 的质数一共有 4 个, 它们是 2, 3, 5, 7 。
+         厄拉多塞筛法:
+         比如说求20以内质数的个数,首先0,1不是质数.2是第一个质数,然后把20以内所有2的倍数划去.
+         2后面紧跟的数即为下一个质数3,然后把3所有的倍数划去.3后面紧跟的数即为下一个质数5,再把5所有的倍数划去.
+         */
+        if n < 3 {
+            return 0
+        }
+        var outs = [Int](repeating: 1, count: n)
+        print(outs)
+        outs[0] = 0
+        outs[1] = 0
+        for i in 2..<Int(sqrt(Double(n))) + 1 {
+            if outs[i] == 1 {
+                var index = i
+                var tmp = i * index
+                while tmp < n {
+                    outs[tmp] = 0
+                    index += 1
+                    tmp = index * i
+                }
+            }
+        }
+        let sum: Int = outs.reduce(0, +)
+        return sum
+    }
 }
