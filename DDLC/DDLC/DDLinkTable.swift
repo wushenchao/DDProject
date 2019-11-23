@@ -171,9 +171,6 @@ class DDLinkTable: NSObject {
     }
     
     func reverseList1(_ head: ListNode?) -> ListNode? {
-        if head == nil || head?.next == nil {
-            return head
-        }
         var curr = head
         var prev: ListNode?
         while curr != nil {

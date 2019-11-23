@@ -247,4 +247,73 @@ class DDTreeNode: NSObject {
     }
 
 
+    // 144. 二叉树的前序遍历
+    func preorderTraversal(_ root: TreeNode?) -> [Int] {
+        var res: [Int] = []
+        func helper(_ root: TreeNode?) {
+            if root != nil {
+                res.append(root!.val)
+                helper(root?.left)
+                helper(root?.right)
+            }
+        }
+        helper(root)
+        return res
+    }
+    
+    // 94. 二叉树的中序遍历
+    func inorderTraversal(_ root: TreeNode?) -> [Int] {
+        if root == nil {
+            return []
+        }
+        return inorderTraversal(root!.left) + [root!.val] + inorderTraversal(root!.right)
+    }
+    
+    // 102. 二叉树的层次遍历
+    func levelOrder(_ root: TreeNode?) -> [[Int]] {
+        if root == nil {
+            return []
+        }
+        var result: [[Int]] = []
+        var queue: [TreeNode] = []
+        queue.append(root!)
+        while !queue.isEmpty {
+            var count = queue.count
+            var temp: [Int] = []
+            while count != 0 {
+                let node = queue.removeFirst()
+                temp.append(node.val)
+                if node.left != nil {
+                    queue.append(node.left!)
+                }
+                if node.right != nil {
+                    queue.append(node.right!)
+                }
+                count -= 1
+            }
+            result.append(temp)
+        }
+        return result
+    }
+    func levelOrder1(_ root: TreeNode?) -> [[Int]] {
+        if root == nil {
+            return []
+        }
+        var result: [[Int]] = []
+        func helper(_ node: TreeNode, _ level: Int) {
+            if result.count == level {
+                result.append([])
+            }
+            result[level].append(node.val)
+            if node.left != nil {
+                helper(node.left!, level+1)
+            }
+            if node.right != nil {
+                helper(node.right!, level+1)
+            }
+        }
+        helper(root!, 0)
+        return result
+    }
+    
 }
