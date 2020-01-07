@@ -317,3 +317,62 @@ class DDTreeNode: NSObject {
     }
     
 }
+
+
+
+class DDTrie: NSObject {
+    /**
+     trie 树构建条件
+     1: 字符集不能太大，存储空间浪费很多
+     2: 字符串的前缀重合比较多，不然空间消耗大
+     3: 需要自己构建 trie 树，比较复杂
+     4: 指针串起来的数据不是连续的，对缓存不友好
+     
+     优化方式: 缩点优化
+     trie树不适合精确匹配查找，这种适合散列表和红黑树
+     trie树适合查找前缀匹配字符串
+     */
+    class TrieNode {
+        public var val: String?
+        // 初始化一个26个空占位
+        public var children: [TrieNode] = Array(repeating: TrieNode(nil), count: 26)
+        // 是否是叶子结点
+        public var isEndingChar: Bool = false
+        public init(_ val: String?) {
+            self.val = val
+        }
+        func isNull() -> Bool {
+            return self.val == nil
+        }
+    }
+    
+    fileprivate let root: TrieNode = TrieNode("/")
+    
+    func insert(_ S: String) {
+        var head = root
+        for s in S {
+            let index: Int = Int(s.asciiValue!) - 97
+            if head.children[index].isNull() {
+                head.children[index] = TrieNode(String(s))
+            }
+            head = head.children[index]
+        }
+        head.isEndingChar = true
+    }
+    
+    func find(_ pattern: String) -> Bool {
+        var head = root
+        for p in pattern {
+            let index: Int = Int(p.asciiValue!) - 97
+            if head.children[index].isNull() {
+                return false
+            }
+            head = head.children[index]
+        }
+        if !head.isEndingChar {
+            return false
+        }
+        return true
+    }
+    
+}

@@ -123,5 +123,35 @@ extension DDBack {
         }
         return res
     }
+}
+
+/**
+ 0-1 背包问题
+ */
+extension DDHot {
+    /**
+     // cw 表示当前已经装进去的物品的重量和；
+     // i 表示考察到哪个物品了；
+     // w 背包重量；
+     // items 表示每个物品的重量；
+     // n 表示物品个数
+     // 假设背包可承受重量100，物品个数10，物品重量存储在数组a中，那可以这样调用函数：
+     // f(0, 0, a, 10, 100)
+     */
+    func zoreAndOne(_ items: [Int], _ w: Int) {
+        
+        func hdfsZoreAndOne(_ items: [Int], _ n: Int, _ w: Int, _ i: Int, _ cw: Int) {
+            if i == n || cw < w {
+                return
+            }
+            hdfsZoreAndOne(items, n, w, i+1, cw)
+            if cw + items[i] <= w {
+                hdfsZoreAndOne(items, n, w, i+1, cw+items[i])
+            }
+        }
+        hdfsZoreAndOne(items, 10, 100, 0, 0)
+        
+    }
+    
     
 }
